@@ -7,7 +7,7 @@ Portafolio web profesional full-stack para Elías Cárdenas, Desarrollador Full 
 ![Stack](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js&logoColor=white)
 ![Stack](https://img.shields.io/badge/PostgreSQL-Prisma-336791?logo=postgresql&logoColor=white)
 
-## ✨ Características
+##  Características
 
 - **7 páginas independientes**: Inicio, Sobre mí, Proyectos, Experiencia, Skills, Certificados, Contacto
 - **Animaciones premium**: scroll reveal, parallax, text reveal, stagger, glassmorphism, tilt 3D, cursor personalizado, smooth scroll (Lenis)
@@ -16,7 +16,7 @@ Portafolio web profesional full-stack para Elías Cárdenas, Desarrollador Full 
 - **Formulario de contacto funcional**, conectado a base de datos, con rate-limiting anti-spam
 - **Totalmente responsive**: móvil, tablet, laptop, desktop
 
-## 🗂️ Estructura del proyecto
+##  Estructura del proyecto
 
 ```
 portfolio-elias/
@@ -27,7 +27,7 @@ portfolio-elias/
 └── assets/            # Recursos compartidos
 ```
 
-## 🚀 Inicio rápido
+##  Inicio rápido
 
 ```bash
 # 1. Backend
@@ -46,12 +46,12 @@ cp .env.example .env
 npm run dev                 # http://localhost:5173
 ```
 
-📖 **Guía detallada paso a paso:** [`docs/manual-instalacion.md`](docs/manual-instalacion.md)
-🌐 **Cómo desplegar a producción:** [`docs/manual-despliegue.md`](docs/manual-despliegue.md)
-🔌 **Referencia completa de la API:** [`docs/api-documentation.md`](docs/api-documentation.md)
-🔐 **Variables de entorno:** [`docs/variables-entorno.md`](docs/variables-entorno.md)
+ **Guía detallada paso a paso:** [`docs/manual-instalacion.md`](docs/manual-instalacion.md)
+ **Cómo desplegar a producción:** [`docs/manual-despliegue.md`](docs/manual-despliegue.md)
+ **Referencia completa de la API:** [`docs/api-documentation.md`](docs/api-documentation.md)
+ **Variables de entorno:** [`docs/variables-entorno.md`](docs/variables-entorno.md)
 
-## 🛠️ Stack tecnológico
+##  Stack tecnológico
 
 **Frontend**
 - React 19 + TypeScript
@@ -69,7 +69,7 @@ npm run dev                 # http://localhost:5173
 - Zod (validación de esquemas)
 - Helmet, CORS, express-rate-limit (seguridad)
 
-## 📋 Modelo de datos
+##  Modelo de datos
 
 | Tabla | Descripción |
 |---|---|
@@ -83,15 +83,3 @@ npm run dev                 # http://localhost:5173
 | `social_links` | Enlaces a redes sociales |
 | `settings` | Configuración general del sitio |
 
-## ⚠️ Decisiones de alcance
-
-Este proyecto se construyó priorizando que **todo lo entregado funcione de extremo a extremo** en lugar de cubrir cada característica posible a medias. Algunas notas honestas:
-
-- **Astro y Three.js** no se incluyeron: el sitio es altamente interactivo client-side (poco beneficio de Astro), y no había un caso de uso 3D concreto que justificara el peso de Three.js.
-- **Envío de emails reales** no está conectado (requiere credenciales SMTP/Resend/SendGrid propias) — el formulario sí guarda los mensajes en PostgreSQL correctamente, y el código está preparado para que conectes tu proveedor de email favorito en `backend/src/services/message.service.ts`.
-- **Lighthouse 90+** no se puede certificar desde este entorno de desarrollo, pero el proyecto sigue las prácticas que lo hacen alcanzable: lazy loading, imágenes optimizadas, code splitting nativo de Vite, fuentes con `display=swap`.
-- **Certificados**: el CV fuente no incluye certificaciones, así que la página muestra un estado "próximamente" en lugar de inventar contenido falso.
-
-## 📄 Licencia
-
-Uso personal — Elías Salomón Cárdenas Cuellar, 2026.
