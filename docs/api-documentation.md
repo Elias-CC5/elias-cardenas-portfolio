@@ -51,7 +51,7 @@ Inicia sesión como administrador.
 ### `POST /api/auth/logout`
 Cierra sesión (limpia la cookie).
 
-### `GET /api/auth/me` 🔒
+### `GET /api/auth/me` 
 Devuelve el usuario autenticado actual.
 
 ---
@@ -71,7 +71,7 @@ Lista todos los proyectos, ordenados por `order`. Público.
 ### `GET /api/projects/:slug`
 Obtiene un proyecto por su slug. Público.
 
-### `POST /api/projects` 🔒
+### `POST /api/projects` 
 Crea un proyecto. Requiere rol `ADMIN` o `EDITOR`.
 
 **Body:**
@@ -88,10 +88,10 @@ Crea un proyecto. Requiere rol `ADMIN` o `EDITOR`.
 }
 ```
 
-### `PUT /api/projects/:id` 🔒
+### `PUT /api/projects/:id` 
 Actualiza un proyecto existente. Mismo body que arriba (todos los campos opcionales).
 
-### `DELETE /api/projects/:id` 🔒
+### `DELETE /api/projects/:id`
 Elimina un proyecto. Requiere rol `ADMIN`.
 
 ---
@@ -101,14 +101,14 @@ Elimina un proyecto. Requiere rol `ADMIN`.
 ### `GET /api/skills`
 Lista todas las habilidades agrupadas por categoría. Público.
 
-### `POST /api/skills` 🔒
+### `POST /api/skills` 
 ```json
 { "name": "Docker", "category": "TOOLS", "order": 5 }
 ```
 Categorías válidas: `FRONTEND`, `BACKEND`, `DATABASE`, `CLOUD`, `TOOLS`, `SOFT_SKILLS`.
 
-### `PUT /api/skills/:id` 🔒
-### `DELETE /api/skills/:id` 🔒 (rol ADMIN)
+### `PUT /api/skills/:id` 
+### `DELETE /api/skills/:id`  (rol ADMIN)
 
 ---
 
@@ -117,7 +117,7 @@ Categorías válidas: `FRONTEND`, `BACKEND`, `DATABASE`, `CLOUD`, `TOOLS`, `SOFT
 ### `GET /api/experience`
 Lista la experiencia laboral/académica. Público.
 
-### `POST /api/experience` 🔒
+### `POST /api/experience` 
 ```json
 {
   "role": "Desarrollador Backend",
@@ -129,8 +129,8 @@ Lista la experiencia laboral/académica. Público.
 }
 ```
 
-### `PUT /api/experience/:id` 🔒
-### `DELETE /api/experience/:id` 🔒 (rol ADMIN)
+### `PUT /api/experience/:id` 
+### `DELETE /api/experience/:id`  (rol ADMIN)
 
 ---
 
@@ -139,7 +139,7 @@ Lista la experiencia laboral/académica. Público.
 ### `GET /api/certificates`
 Público.
 
-### `POST /api/certificates` 🔒
+### `POST /api/certificates` 
 ```json
 {
   "title": "AWS Certified Developer",
@@ -151,8 +151,8 @@ Público.
 }
 ```
 
-### `PUT /api/certificates/:id` 🔒
-### `DELETE /api/certificates/:id` 🔒 (rol ADMIN)
+### `PUT /api/certificates/:id` 
+### `DELETE /api/certificates/:id`  (rol ADMIN)
 
 ---
 
@@ -165,17 +165,17 @@ Endpoint público del formulario de contacto. Limitado a 5 solicitudes cada 15 m
 { "name": "Juan Pérez", "email": "juan@email.com", "message": "Hola, quiero hablar sobre un proyecto..." }
 ```
 
-### `GET /api/contact` 🔒
+### `GET /api/contact` 
 Lista todos los mensajes recibidos. Requiere rol `ADMIN` o `EDITOR`.
 
-### `PATCH /api/contact/:id` 🔒
+### `PATCH /api/contact/:id` 
 Actualiza el estado de un mensaje.
 ```json
 { "status": "READ" }
 ```
 Valores válidos: `UNREAD`, `READ`, `ARCHIVED`.
 
-### `DELETE /api/contact/:id` 🔒
+### `DELETE /api/contact/:id` 
 Elimina un mensaje. Requiere rol `ADMIN`.
 
 ---
