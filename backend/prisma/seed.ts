@@ -149,7 +149,7 @@ const skills: { name: string; category: 'FRONTEND' | 'BACKEND' | 'DATABASE' | 'T
 
   // --- Social Links ---
   const socials = [
-    { label: 'GitHub', url: 'https://github.com/FAILO123', icon: 'github', order: 1 },
+    { label: 'GitHub', url: 'https://github.com/Elias-CC5', icon: 'github', order: 1 },
     { label: 'LinkedIn', url: 'https://linkedin.com/in/elias-salomon-cardenas', icon: 'linkedin', order: 2 },
     { label: 'Email', url: 'mailto:failocdns871@gmail.com', icon: 'email', order: 3 },
   ];
