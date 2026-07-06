@@ -52,15 +52,14 @@ export const skills: Skill[] = [
   { name: 'SQL Server', category: 'database' },
   { name: 'Supabase', category: 'database' },
   // Tools
-  // En el array skills, agrega estas después de Git:
-{ name: 'GitHub', category: 'tools' },
-{ name: 'Postman', category: 'tools' },
-{ name: 'npm', category: 'tools' },
-{ name: 'Vite', category: 'tools' },   // ya lo tienes en frontend, puedes tenerlo en ambos
-{ name: 'Firebase', category: 'tools' },
+  { name: 'GitHub', category: 'tools' },
+  { name: 'Postman', category: 'tools' },
+  { name: 'npm', category: 'tools' },
+  { name: 'Vite', category: 'tools' },
+  { name: 'Firebase', category: 'tools' },
   { name: 'IntelliJ IDEA', category: 'tools' },
-{ name: 'Android Studio', category: 'tools' },
-{ name: 'XAMPP', category: 'tools' },
+  { name: 'Android Studio', category: 'tools' },
+  { name: 'XAMPP', category: 'tools' },
 ];
 
 export const projects: Project[] = [
@@ -82,7 +81,6 @@ export const projects: Project[] = [
     myRole: 'Desarrollo Full Stack',
     context: 'Proyecto académico — TECSUP',
   },
- 
   {
     id: 'apuestas-jwv',
     slug: 'apuestas-jwv',
@@ -97,28 +95,29 @@ export const projects: Project[] = [
       'Sistema de puntos en lugar de dinero real',
       'Registro y gestión de usuarios dentro de la red de TECSUP',
     ],
-tech: ['React', 'Vite', 'JavaScript', 'NestJS', 'TypeScript', 'PostgreSQL', 'Redis' , 'docker'],    status: 'completed',
+    tech: ['React', 'Vite', 'JavaScript', 'NestJS', 'TypeScript', 'PostgreSQL', 'Redis', 'docker'],
+    status: 'completed',
     teamType: 'team',
     myRole: 'Diseño de backend',
     context: 'Proyecto en equipo — TECSUP',
     repoUrl: 'https://github.com/FAILO123/apuestas_jwv',
     gallery: [
-  { src: '/images/Apuestas%20JWV/LOGIN.png', label: 'Login' },
-  { src: '/images/Apuestas%20JWV/register.png', label: 'Registro' },
-  { src: '/images/Apuestas%20JWV/Dashboardadmin.png', label: 'Dashboard admin' },
-  { src: '/images/Apuestas%20JWV/SALAS.png', label: 'Salas' },
-  { src: '/images/Apuestas%20JWV/ELIMINATORIAS.png', label: 'Eliminatorias' },
-  { src: '/images/Apuestas%20JWV/Fase%20de%20Grupos.png', label: 'Fase de grupos' },
-  { src: '/images/Apuestas%20JWV/Jugadores.png', label: 'Jugadores' },
-  { src: '/images/Apuestas%20JWV/Partidos(ADMIN).png', label: 'Partidos (admin)' },
-  { src: '/images/Apuestas%20JWV/PREDICE.png', label: 'Predice' },
-  { src: '/images/Apuestas%20JWV/Mis%20Apuestas.png', label: 'Mis apuestas' },
-  { src: '/images/Apuestas%20JWV/Mi%20perfil.png', label: 'Mi perfil' },
-  { src: '/images/Apuestas%20JWV/Ranking%20.png', label: 'Ranking' },
-  { src: '/images/Apuestas%20JWV/Torneo(ADMIN).png', label: 'Torneo (admin)' },
-  { src: '/images/Apuestas%20JWV/Torneo2(admin).png', label: 'Torneo — vista 2' },
-  { src: '/images/Apuestas%20JWV/Partido%20globa.png', label: 'Partido global' },
-],
+      { src: '/images/Apuestas%20JWV/LOGIN.png', label: 'Login' },
+      { src: '/images/Apuestas%20JWV/register.png', label: 'Registro' },
+      { src: '/images/Apuestas%20JWV/Dashboardadmin.png', label: 'Dashboard admin' },
+      { src: '/images/Apuestas%20JWV/SALAS.png', label: 'Salas' },
+      { src: '/images/Apuestas%20JWV/ELIMINATORIAS.png', label: 'Eliminatorias' },
+      { src: '/images/Apuestas%20JWV/Fase%20de%20Grupos.png', label: 'Fase de grupos' },
+      { src: '/images/Apuestas%20JWV/Jugadores.png', label: 'Jugadores' },
+      { src: '/images/Apuestas%20JWV/Partidos(ADMIN).png', label: 'Partidos (admin)' },
+      { src: '/images/Apuestas%20JWV/PREDICE.png', label: 'Predice' },
+      { src: '/images/Apuestas%20JWV/Mis%20Apuestas.png', label: 'Mis apuestas' },
+      { src: '/images/Apuestas%20JWV/Mi%20perfil.png', label: 'Mi perfil' },
+      { src: '/images/Apuestas%20JWV/Ranking%20.png', label: 'Ranking' },
+      { src: '/images/Apuestas%20JWV/Torneo(ADMIN).png', label: 'Torneo (admin)' },
+      { src: '/images/Apuestas%20JWV/Torneo2(admin).png', label: 'Torneo — vista 2' },
+      { src: '/images/Apuestas%20JWV/Partido%20globa.png', label: 'Partido global' },
+    ],
   },
   {
     id: 'coffee-vibes',
@@ -185,7 +184,8 @@ tech: ['React', 'Vite', 'JavaScript', 'NestJS', 'TypeScript', 'PostgreSQL', 'Red
       'Maquetado y experiencia de usuario del catálogo y checkout',
       'Trabajo en equipo dentro de un proyecto de tesis',
     ],
-tech: ['Astro', 'TypeScript', 'CSS', 'React', 'Vite', 'Axios', 'Tailwind CSS',   'NestJS', 'Node.js', 'TypeORM', 'PostgreSQL', 'JWT (JSON Web Token)', 'Bcrypt', 'OpenRouter (SDK de OpenAI)', 'ST APIRE', ],    status: 'completed',
+    tech: ['Astro', 'TypeScript', 'CSS', 'React', 'Vite', 'Axios', 'Tailwind CSS', 'NestJS', 'Node.js', 'TypeORM', 'PostgreSQL', 'JWT (JSON Web Token)', 'Bcrypt', 'OpenRouter (SDK de OpenAI)', 'ST APIRE'],
+    status: 'completed',
     teamType: 'team',
     myRole: 'Diseño de frontend',
     context: 'Proyecto de tesis — Empresa de catering',
@@ -234,6 +234,7 @@ export const education: EducationItem[] = [
     description: 'Diseño y Desarrollo de Software',
   },
 ];
+
 export const certificates = [
   {
     id: 'cisco-cybersecurity',
@@ -241,9 +242,11 @@ export const certificates = [
     issuer: 'Cisco Networking Academy',
     issueDate: 'Octubre 2024',
     category: 'Ciberseguridad',
-    description: 'Conocimientos fundamentales en seguridad digital, amenazas informáticas y protección de redes.',
+    description: 'Conocimientos fundamentales en seguridad digital...',
     credentialId: 'dcb4ac6b-c369-45cd-b8a0-64aad2e4deb5',
     credentialUrl: '/certificados/certificado-cisco.pdf',
+    logo: '/images/Logo/CISCO.png', // <-- CORREGIDO AQUÍ
+    color: '#049FD9'
   },
   {
     id: 'aws-billing',
@@ -254,6 +257,8 @@ export const certificates = [
     description: 'Gestión de costos y facturación en servicios de AWS.',
     credentialId: '',
     credentialUrl: '/certificados/AWS Billing and Cost Management (Español LATAM).pdf',
+    logo: '/images/Logo/AWS.png', // <-- CORREGIDO AQUÍ
+    color: '#FF9900'
   },
   {
     id: 'aws-generative-ai',
@@ -261,9 +266,11 @@ export const certificates = [
     issuer: 'Amazon Web Services',
     issueDate: 'Julio 2026',
     category: 'Cloud / IA',
-    description: 'Fundamentos de inteligencia artificial generativa en el ecosistema AWS.',
+    description: 'Fundamentos de inteligencia artificial generativa...',
     credentialId: '',
     credentialUrl: '/certificados/AWS Partner Generative AI.pdf',
+    logo: '/images/Logo/AWS.png', // <-- CORREGIDO AQUÍ
+    color: '#FF9900'
   },
   {
     id: 'curso-poo',
@@ -274,6 +281,8 @@ export const certificates = [
     description: 'Principios de POO aplicados al desarrollo de software moderno.',
     credentialId: '',
     credentialUrl: '/certificados/certificado-curso-poo (1).pdf',
+    logo: '/images/Logo/EDTEAM.png', // <-- CORREGIDO AQUÍ
+    color: '#00BC71'
   },
   {
     id: 'fundamentals-ml',
@@ -281,9 +290,11 @@ export const certificates = [
     issuer: 'Amazon Web Services',
     issueDate: 'Julio 2026',
     category: 'Cloud / IA',
-    description: 'Fundamentos de machine learning y sus aplicaciones en la nube.',
+    description: 'Fundamentos de machine learning...',
     credentialId: '',
     credentialUrl: '/certificados/Fundamentals of Machine Learning and Artificial Intelligence.pdf',
+    logo: '/images/Logo/AWS.png', // <-- CORREGIDO AQUÍ
+    color: '#FF9900'
   },
   {
     id: 'intro-generative-ai',
@@ -291,9 +302,11 @@ export const certificates = [
     issuer: 'Amazon Web Services',
     issueDate: 'Julio 2026',
     category: 'Cloud / IA',
-    description: 'Introducción a los modelos de IA generativa y sus casos de uso.',
+    description: 'Introducción a los modelos de IA generativa...',
     credentialId: '',
     credentialUrl: '/certificados/Introduction to Generative AI (Español LATAM.pdf',
+    logo: '/images/Logo/AWS.png', // <-- CORREGIDO AQUÍ
+    color: '#FF9900'
   },
 ];
 export const techStackCore = ['React', 'Astro', 'Node.js', 'NestJS', 'PostgreSQL', 'MySQL', 'MongoDB', 'Git'];

@@ -126,3 +126,22 @@ html.lenis body {
   background-clip: text;
   color: transparent;
 }
+
+/* Nuevo carrusel horizontal elegante para certificados */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Forzar ancho y alineación en el carrete */
+.snap-inline {
+  scroll-snap-type: inline mandatory;
+}
+
+.snap-inline > * {
+  scroll-snap-align: center;
+}

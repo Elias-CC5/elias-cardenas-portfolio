@@ -3,10 +3,8 @@ import PageHeader from '@/components/ui/PageHeader';
 import Reveal, { StaggerGroup, staggerItem } from '@/components/ui/Reveal';
 import SEO from '@/components/layout/SEO';
 import { motion, useScroll, useTransform } from 'framer-motion';
-// He añadido 'certificates' a la importación
 import { profile, stats, education, certificates, techStackCore } from '@/data/portfolio';
 import { getSkillIcon } from '@/data/skillIcons';
-// He añadido 'FiAward' y 'FiDownload' a la importación
 import { FiCalendar, FiTarget, FiShield, FiLayers, FiAward, FiDownload } from 'react-icons/fi';
 
 const PRINCIPLES = [
@@ -27,11 +25,6 @@ const PRINCIPLES = [
   },
 ];
 
-/* ─── TiltCard mejorada ─────────────────────────────────────────────────────
-   · Spring más rápido (stiffness 300) para que sienta responsiva pero suave
-   · Glow más grande (240px) y opacidad mayor al hacer hover
-   · Borde sutil que se ilumina al 60% en hover en lugar de 40%
-────────────────────────────────────────────────────────────────────────────── */
 function TiltCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
@@ -61,7 +54,6 @@ function TiltCard({ children, className = '' }: { children: React.ReactNode; cla
         style={{ transformStyle: 'preserve-3d' }}
         className={`relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors duration-300 hover:border-[var(--color-accent-bright)]/60 ${className}`}
       >
-        {/* Glow de seguimiento del cursor */}
         <div
           className="pointer-events-none absolute inset-0 transition-opacity duration-300"
           style={{
@@ -75,11 +67,6 @@ function TiltCard({ children, className = '' }: { children: React.ReactNode; cla
   );
 }
 
-/* ─── Photo3D ────────────────────────────────────────────────────────────────
-   Tarjeta de foto con efecto 3D directo sobre el DOM (sin useState en cada
-   mousemove) para máxima fluidez. Incluye badge de disponibilidad flotante
-   con efecto glass y dos esquinas decorativas de acento.
-────────────────────────────────────────────────────────────────────────────── */
 function Photo3D({ src, alt }: { src: string; alt: string }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -109,10 +96,7 @@ function Photo3D({ src, alt }: { src: string; alt: string }) {
 
   return (
     <div style={{ perspective: '900px' }}>
-      {/* Glow ambiental detrás de la foto */}
       <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-gradient-to-br from-[var(--color-accent)]/25 via-[var(--color-accent)]/10 to-transparent blur-3xl" />
-
-      {/* Esquinas decorativas */}
       <span className="absolute -top-3 -left-3 z-20 h-7 w-7 rounded-tl-2xl border-t-2 border-l-2 border-[var(--color-accent-bright)]/70" />
       <span className="absolute -right-3 -bottom-3 z-20 h-7 w-7 rounded-br-2xl border-r-2 border-b-2 border-[var(--color-accent-bright)]/70" />
 
@@ -125,11 +109,7 @@ function Photo3D({ src, alt }: { src: string; alt: string }) {
         style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
       >
         <img src={src} alt={alt} className="h-full w-full object-cover" />
-
-        {/* Gradiente oscuro en la parte inferior para el badge */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/70 to-transparent" />
-
-        {/* Badge de disponibilidad flotante (glass) */}
         <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md">
           <span className="relative flex h-2.5 w-2.5 shrink-0">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -156,12 +136,11 @@ export default function About() {
       <SEO title={`Sobre mí — ${profile.fullName}`} description={profile.about} />
 
       <div ref={heroRef} className="relative overflow-hidden px-6 pt-32 pb-24 md:px-12 md:pt-40">
-
-        {/* Glow ambiental de fondo con parallax */}
+        
         <motion.div
           style={{ y: glowY }}
-className="pointer-events-none absolute -top-40 left-1/3 h-[350px] w-[500px] -translate-x-1/2 rounded-full bg-[var(--color-accent)]/12 blur-[90px]"        />
-        {/* Segundo glow secundario para más profundidad */}
+          className="pointer-events-none absolute -top-40 left-1/3 h-[350px] w-[500px] -translate-x-1/2 rounded-full bg-[var(--color-accent)]/12 blur-[90px]"
+        />
         <div className="pointer-events-none absolute top-1/2 right-0 h-[300px] w-[400px] -translate-y-1/2 rounded-full bg-[var(--color-accent)]/6 blur-[100px]" />
 
         <div className="relative z-10 mx-auto max-w-7xl">
@@ -169,7 +148,7 @@ className="pointer-events-none absolute -top-40 left-1/3 h-[350px] w-[500px] -tr
 
           <div className="mt-12 grid gap-16 lg:grid-cols-[1fr_1.3fr]">
 
-            {/* ── COLUMNA IZQUIERDA: foto 3D + stats + stack favorito ── */}
+            {/* COLUMNA IZQUIERDA */}
             <div className="space-y-12">
               <div>
                 <Reveal>
@@ -190,7 +169,6 @@ className="pointer-events-none absolute -top-40 left-1/3 h-[350px] w-[500px] -tr
                 </StaggerGroup>
               </div>
 
-              {/* Stack favorito (Movido aquí para que aparezca abajo de la foto/stats) */}
               <div>
                 <Reveal delay={0.42}>
                   <h2 className="font-display text-2xl font-semibold text-[var(--color-paper)] md:text-3xl">Stack favorito</h2>
@@ -206,11 +184,7 @@ className="pointer-events-none absolute -top-40 left-1/3 h-[350px] w-[500px] -tr
                         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                         className="flex cursor-default items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 font-mono text-sm text-[var(--color-paper-dim)] transition-colors"
                       >
-                        {/* Dot de color propio de la tecnología */}
-                        <span
-                          className="h-1.5 w-1.5 shrink-0 rounded-full"
-                          style={{ backgroundColor: color }}
-                        />
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: color }} />
                         <Icon size={14} style={{ color }} />
                         {tech}
                       </motion.div>
@@ -220,10 +194,8 @@ className="pointer-events-none absolute -top-40 left-1/3 h-[350px] w-[500px] -tr
               </div>
             </div>
 
-            {/* ── COLUMNA DERECHA: historia, principios, educación, certificaciones ── */}
+            {/* COLUMNA DERECHA */}
             <div>
-
-              {/* Historia */}
               <Reveal>
                 <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-accent-bright)]">Mi historia</p>
                 <h2 className="mt-3 font-display text-2xl font-semibold text-[var(--color-paper)] md:text-3xl">
@@ -234,7 +206,6 @@ className="pointer-events-none absolute -top-40 left-1/3 h-[350px] w-[500px] -tr
                 <p className="mt-5 text-base leading-[1.85] text-[var(--color-paper-dim)] md:text-lg">{profile.about}</p>
               </Reveal>
 
-              {/* Principios */}
               <Reveal delay={0.18} className="mt-12">
                 <h2 className="font-display text-2xl font-semibold text-[var(--color-paper)] md:text-3xl">Cómo trabajo</h2>
               </Reveal>
@@ -257,7 +228,6 @@ className="pointer-events-none absolute -top-40 left-1/3 h-[350px] w-[500px] -tr
                 })}
               </StaggerGroup>
 
-              {/* Formación */}
               <Reveal delay={0.24} className="mt-12">
                 <h2 className="font-display text-2xl font-semibold text-[var(--color-paper)] md:text-3xl">Formación</h2>
               </Reveal>
@@ -284,51 +254,87 @@ className="pointer-events-none absolute -top-40 left-1/3 h-[350px] w-[500px] -tr
                   </Reveal>
                 ))}
               </div>
+            </div>
 
-              {/* ── SECCIÓN: Certificaciones ──────────────────────────────────── */}
-              <Reveal delay={0.32} className="mt-12">
-                <h2 className="font-display text-2xl font-semibold text-[var(--color-paper)] md:text-3xl">Certificaciones</h2>
-              </Reveal>
-              <div className="mt-5 space-y-3">
-                {certificates.map((cert, i) => (
-                  <Reveal key={cert.id} delay={0.34 + i * 0.05}>
+          </div>
+
+          {/* SECCIÓN DE CERTIFICACIONES */}
+          <div className="mt-24 border-t border-[var(--color-border)] pt-16">
+            <Reveal delay={0.32}>
+              <h2 className="text-center font-display text-3xl font-semibold text-[var(--color-paper)] md:text-4xl">
+                Certificaciones
+              </h2>
+            </Reveal>
+
+            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {certificates.map((cert: any, i) => {
+                const cardColor = cert.color || 'var(--color-accent-bright)';
+                const fullLogoUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}${cert.logo}`;
+                
+                return (
+                  <Reveal key={cert.id} delay={0.1 + i * 0.04}>
                     <motion.div
-                      whileHover={{ x: 4 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-                      className="flex flex-col gap-5 rounded-r-2xl border border-[var(--color-border)] border-l-[var(--color-accent-bright)] bg-[var(--color-surface)] p-5 transition-colors hover:border-[var(--color-accent-bright)]/40 sm:flex-row"
-                      style={{ borderLeftWidth: '3px' }}
+                      whileHover={{ y: -6, borderColor: cardColor }}
+                      transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                      className="flex h-full flex-col rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-xl shadow-black/10 transition-colors"
                     >
-                      {/* Vista previa visual del certificado / Icono */}
-                      <div className="relative flex h-24 w-full shrink-0 items-center justify-center overflow-hidden rounded-xl bg-black/40 border border-[var(--color-border)] sm:w-24">
-                        <FiAward className="absolute text-5xl text-[var(--color-accent)]/20" />
-                        <span className="relative font-mono text-[10px] uppercase tracking-wider text-[var(--color-accent-bright)]">{cert.category}</span>
+                      {/* CONTENEDOR DE IMAGEN PANORÁMICO OPTIMIZADO PARA LLENAR EL ESPACIO */}
+                      <div className="relative flex aspect-[16/9] w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-neutral-950/40 border border-[var(--color-border)]">
+                        <div 
+                          className="absolute inset-0 opacity-10 blur-2xl transition-opacity pointer-events-none"
+                          style={{ backgroundColor: cardColor }}
+                        />
+
+                        {cert.logo ? (
+                          <img 
+                            src={fullLogoUrl} 
+                            alt={`Logo de ${cert.issuer}`} 
+                            className="h-full w-full object-contain scale-95 select-none transition-transform duration-300 hover:scale-100"
+                          />
+                        ) : (
+                          <FiAward size={52} style={{ color: cardColor }} />
+                        )}
+
+                        <span className="absolute top-3 right-3 rounded-full bg-black/60 backdrop-blur-md px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--color-paper-dim)] border border-[var(--color-border)]">
+                          {cert.category}
+                        </span>
                       </div>
 
-                      <div className="flex flex-col justify-between gap-4 w-full">
+                      <div className="mt-5 flex flex-1 flex-col justify-between">
                         <div>
-                          <p className="font-display font-semibold text-[var(--color-paper)]">{cert.title}</p>
-                          <p className="mt-0.5 text-sm text-[var(--color-paper-dim)]">{cert.issuer}</p>
-                          <p className="mt-1 font-mono text-xs text-[var(--color-muted)]">Emitido en {cert.issueDate}</p>
+                          <p className="font-display text-base font-semibold text-[var(--color-paper)] line-clamp-2">
+                            {cert.title}
+                          </p>
+                          <p className="mt-1 text-sm text-[var(--color-paper-dim)] flex items-center gap-1.5">
+                            <span className="h-1 w-1 rounded-full" style={{ backgroundColor: cardColor }} />
+                            {cert.issuer}
+                          </p>
+                          <p className="mt-2 font-mono text-xs text-[var(--color-muted)]">
+                            Emitido en {cert.issueDate}
+                          </p>
                         </div>
                         
-                        {/* Botón de descarga para el PDF */}
-                        <a 
-                          href={cert.credentialUrl} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="inline-flex w-fit items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 font-mono text-xs text-[var(--color-paper-dim)] transition-colors hover:border-[var(--color-accent-bright)] hover:text-[var(--color-accent-bright)]"
-                        >
-                          <FiDownload size={14} />
-                          Ver Certificado (PDF)
-                        </a>
+                        <div className="mt-6">
+                          <a 
+                            href={cert.credentialUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 font-mono text-xs text-[var(--color-paper-dim)] transition-colors hover:bg-[var(--color-accent)]/5"
+                            onMouseEnter={(e) => (e.currentTarget.style.borderColor = cardColor)}
+                            onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--color-border)')}
+                          >
+                            <FiDownload size={14} />
+                            Ver Certificado (PDF)
+                          </a>
+                        </div>
                       </div>
                     </motion.div>
                   </Reveal>
-                ))}
-              </div>
-
+                );
+              })}
             </div>
           </div>
+          
         </div>
       </div>
     </>
