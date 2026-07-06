@@ -253,7 +253,7 @@ export const certificates = [
     category: 'Cloud',
     description: 'Gestión de costos y facturación en servicios de AWS.',
     credentialId: '',
-    credentialUrl: '/certificados/AWS Billing and Cost Manage.pdf',
+    credentialUrl: '/certificados/AWS Billing and Cost Management (Español LATAM).pdf',
   },
   {
     id: 'aws-generative-ai',
@@ -283,7 +283,7 @@ export const certificates = [
     category: 'Cloud / IA',
     description: 'Fundamentos de machine learning y sus aplicaciones en la nube.',
     credentialId: '',
-    credentialUrl: '/certificados/Fundamentals of Machine Lear.pdf',
+    credentialUrl: '/certificados/Fundamentals of Machine Learning and Artificial Intelligence.pdf',
   },
   {
     id: 'intro-generative-ai',
@@ -293,7 +293,7 @@ export const certificates = [
     category: 'Cloud / IA',
     description: 'Introducción a los modelos de IA generativa y sus casos de uso.',
     credentialId: '',
-    credentialUrl: '/certificados/Introduction to Generative AI.pdf',
+    credentialUrl: '/certificados/Introduction to Generative AI (Español LATAM.pdf',
   },
 ];
 export const techStackCore = ['React', 'Astro', 'Node.js', 'NestJS', 'PostgreSQL', 'MySQL', 'MongoDB', 'Git'];
