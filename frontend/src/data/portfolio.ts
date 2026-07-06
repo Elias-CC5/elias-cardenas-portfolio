@@ -22,7 +22,7 @@ export const profile: Profile = {
 };
 
 export const stats: Stat[] = [
-  { value: '5', label: 'Proyectos completados' },
+  { value: '3', label: 'Proyectos completados' },
   { value: '2+', label: 'Años de experiencia' },
   { value: '5', label: 'Tech stack core' },
 ];
@@ -241,10 +241,59 @@ export const certificates = [
     issuer: 'Cisco Networking Academy',
     issueDate: 'Octubre 2024',
     category: 'Ciberseguridad',
-    description: 'Documento oficial otorgado por Cisco Networking Academy...',
+    description: 'Conocimientos fundamentales en seguridad digital, amenazas informáticas y protección de redes.',
     credentialId: 'dcb4ac6b-c369-45cd-b8a0-64aad2e4deb5',
-    // CORRECCIÓN: Apunta directo a la raíz de la carpeta public
-    credentialUrl: '/certificado-cisco.pdf', 
+    credentialUrl: '/certificados/certificado-cisco.pdf',
+  },
+  {
+    id: 'aws-billing',
+    title: 'AWS Billing and Cost Management',
+    issuer: 'Amazon Web Services',
+    issueDate: 'Julio 2025',
+    category: 'Cloud',
+    description: 'Gestión de costos y facturación en servicios de AWS.',
+    credentialId: '',
+    credentialUrl: '/certificados/AWS Billing and Cost Manage.pdf',
+  },
+  {
+    id: 'aws-generative-ai',
+    title: 'AWS Partner Generative AI',
+    issuer: 'Amazon Web Services',
+    issueDate: 'Julio 2026',
+    category: 'Cloud / IA',
+    description: 'Fundamentos de inteligencia artificial generativa en el ecosistema AWS.',
+    credentialId: '',
+    credentialUrl: '/certificados/AWS Partner Generative AI.pdf',
+  },
+  {
+    id: 'curso-poo',
+    title: 'Programación Orientada a Objetos',
+    issuer: 'EDteam',
+    issueDate: 'Julio 2026',
+    category: 'Programación',
+    description: 'Principios de POO aplicados al desarrollo de software moderno.',
+    credentialId: '',
+    credentialUrl: '/certificados/certificado-curso-poo (1).pdf',
+  },
+  {
+    id: 'fundamentals-ml',
+    title: 'Fundamentals of Machine Learning',
+    issuer: 'Amazon Web Services',
+    issueDate: 'Julio 2026',
+    category: 'Cloud / IA',
+    description: 'Fundamentos de machine learning y sus aplicaciones en la nube.',
+    credentialId: '',
+    credentialUrl: '/certificados/Fundamentals of Machine Lear.pdf',
+  },
+  {
+    id: 'intro-generative-ai',
+    title: 'Introduction to Generative AI',
+    issuer: 'Amazon Web Services',
+    issueDate: 'Julio 2026',
+    category: 'Cloud / IA',
+    description: 'Introducción a los modelos de IA generativa y sus casos de uso.',
+    credentialId: '',
+    credentialUrl: '/certificados/Introduction to Generative AI.pdf',
   },
 ];
 export const techStackCore = ['React', 'Astro', 'Node.js', 'NestJS', 'PostgreSQL', 'MySQL', 'MongoDB', 'Git'];
