@@ -101,7 +101,7 @@ export default function Contact() {
 
             <Reveal delay={0.15} className="mt-6 flex gap-3">
               <a
-                href="https://github.com/FAILO123"
+                href="https://github.com/Elias-CC5"
                 target="_blank"
                 rel="noreferrer"
                 data-cursor-pointer
