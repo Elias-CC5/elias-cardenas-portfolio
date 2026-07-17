@@ -4,10 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/**
- * Anima los hijos directos de un contenedor con un stagger cinematográfico
- * disparado por scroll, usando GSAP + ScrollTrigger.
- */
+
 export function useGsapStagger<T extends HTMLElement>(selector: string) {
   const containerRef = useRef<T>(null);
 
