@@ -1,125 +1,283 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
+/* ==========================================================================
+   DESIGN SYSTEM — "Ficha técnica"
+   Monocromo cálido + un único color señal.
+   Todo valor que se repita más de una vez vive acá como token.
+   ========================================================================== */
+
 @theme {
-  /* === Color tokens modificados a Blanco y Negro Puro === */
-  --color-ink: #000000;              /* Negro absoluto de fondo */
-  --color-surface: #0e0e10;          /* Gris muy oscuro para tarjetas */
-  --color-surface-2: #161619;        /* Segundo nivel de superficie */
-  --color-border: #222225;           /* Bordes sutiles oscuros */
-  --color-paper: #ffffff;            /* Blanco puro para títulos y texto principal */
-  --color-paper-dim: #a1a1a6;        /* Gris claro para subtítulos */
-  --color-muted: #515156;            /* Gris apagado */
-  
-  /* Eliminados los tonos morados, ahora son una escala monocromática */
-  --color-accent: #ffffff;           /* Blanco puro para acentos */
-  --color-accent-bright: #ffffff;    /* Blanco brillante */
-  --color-accent-dim: #3f3f46;       /* Gris medio para estados hover */
-  
-  --color-success: #ffffff;          /* Cambiado a blanco para mantener el minimalismo */
-  --color-warn: #a1a1a6;
+  /* --- Superficies -------------------------------------------------------
+     Negro cálido, NO #000: el negro puro no deja construir profundidad
+     y provoca smearing en OLED. Cada nivel sube ~2% de luminancia. */
+  --color-ink:          #09090a;
+  --color-ink-2:        #0d0d0f;
+  --color-surface:      #121214;
+  --color-surface-2:    #17171a;
 
-  /* === Typography === */
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* --- Bordes: hairlines, no cajas -------------------------------------- */
+  --color-border:        #212125;
+  --color-border-strong: #33333a;
 
-  /* === Easings === */
-  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  /* --- Texto -------------------------------------------------------------
+     muted subido de #515156 a #6f6f79 para pasar WCAG AA (4.6:1) */
+  --color-paper:     #f4f4f5;
+  --color-paper-dim: #a5a5ad;
+  --color-muted:     #6f6f79;
+
+  /* --- Acento monocromo --------------------------------------------------
+     Mantiene la identidad B&N. Se usa como "highlight claro", no como color. */
+  --color-accent:        #ededf0;
+  --color-accent-bright: #ffffff;
+  --color-accent-dim:    #3f3f46;
+
+  /* --- Color señal -------------------------------------------------------
+     El ÚNICO color del sitio. Cuatro usos: estado en vivo, focus ring,
+     barra de progreso, subrayado de link. Cambiá esta línea y cambia todo. */
+  --color-signal:      #10b981;
+  --color-signal-dim:  #0b7a56;
+
+  --color-success: #6ee7a8;
+  --color-warn:    #f5c56b;
+  --color-danger:  #f87171;
+
+  /* --- Tipografía -------------------------------------------------------- */
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  /* --- Radios: contenidos. El exceso de rounded es un anti-pattern. ------ */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* --- Motion -----------------------------------------------------------
+     Tres duraciones y tres easings. Nada fuera de esta lista. */
+  --duration-instant: 120ms;  /* feedback táctil: press, focus */
+  --duration-quick:   220ms;  /* hover, color, opacidad */
+  --duration-normal:  420ms;  /* entradas, layout */
+  --duration-slow:    700ms;  /* reveals de scroll */
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);    /* entradas */
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);    /* reveals largos */
+  --ease-in-out:    cubic-bezier(0.65, 0, 0.35, 1);   /* transiciones */
+
+  /* --- Elevación: una sola sombra real, no cinco ------------------------- */
+  --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
 }
 
-* {
-  box-sizing: border-box;
+/* ==========================================================================
+   ESCALA TIPOGRÁFICA FLUIDA
+   clamp() en vez de seis breakpoints por título.
+   Cada paso tiene su propio tracking: los tamaños grandes necesitan
+   tracking negativo o se ven flojos.
+   ========================================================================== */
+
+.t-display {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 1rem + 3.4vw, 4.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  font-weight: 700;
 }
+
+.t-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.t-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.625rem, 1.3rem + 1.5vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  font-weight: 600;
+}
+
+.t-h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+
+.t-lead {
+  font-size: clamp(1rem, 0.95rem + 0.35vw, 1.1875rem);
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+}
+
+.t-body {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+/* Etiqueta mono en versalitas: el idioma de la metadata en todo el sitio */
+.t-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Numerales tabulares para índices, años y estadísticas: sin baile de ancho */
+.t-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+* { box-sizing: border-box; }
 
 html {
-  scroll-behavior: auto;
+  scroll-behavior: auto; /* Lenis maneja el smooth scroll */
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
+  margin: 0;
   background-color: var(--color-ink);
   color: var(--color-paper);
   font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
 
-/* Selección de texto en Blanco y Negro */
 ::selection {
-  background-color: var(--color-paper);
+  background-color: var(--color-signal);
   color: var(--color-ink);
 }
 
-/* Custom scrollbar monocromática */
-::-webkit-scrollbar {
-  width: 10px;
+/* ==========================================================================
+   FOCO — uso #2 del color señal.
+   Nunca se elimina el outline: se hace bonito.
+   ========================================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
 }
-::-webkit-scrollbar-track {
-  background: var(--color-ink);
+:focus:not(:focus-visible) { outline: none; }
+
+/* Salta al contenido — aparece sólo con teclado */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 200;
+  transform: translate(-50%, -140%);
+  padding: 0.75rem 1.25rem;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  transition: transform var(--duration-quick) var(--ease-out-quart);
 }
+.skip-link:focus-visible { transform: translate(-50%, 0); }
+
+/* ==========================================================================
+   SCROLLBAR
+   ========================================================================== */
+
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--color-ink); }
 ::-webkit-scrollbar-thumb {
   background: var(--color-border);
-  border-radius: 8px;
+  border: 3px solid var(--color-ink);
+  border-radius: 99px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent-dim);
+::-webkit-scrollbar-thumb:hover { background: var(--color-border-strong); }
+
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none !important; }
+
+/* ==========================================================================
+   UTILIDADES DE COMPOSICIÓN
+   ========================================================================== */
+
+/* Contenedor único. Antes cada página inventaba su max-w y su padding. */
+.shell {
+  width: 100%;
+  max-width: 82rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 3rem);
+}
+.shell-narrow { max-width: 52rem; }
+
+/* Ritmo vertical de sección, fluido */
+.section { padding-block: clamp(4.5rem, 9vw, 8.5rem); }
+.section-tight { padding-block: clamp(3rem, 6vw, 5rem); }
+
+/* Hairline: el separador por defecto del sitio, en vez de bordes de caja */
+.rule {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: 0;
 }
 
-/* Foco de accesibilidad en Blanco */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
+/* ==========================================================================
+   LINK EDITORIAL — uso #3 del color señal.
+   El subrayado crece desde la izquierda; sin cambio de color de texto.
+   background-size anima en el compositor, no provoca layout.
+   ========================================================================== */
 
-/* Respect reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+.link-underline {
+  background-image: linear-gradient(var(--color-signal), var(--color-signal));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size var(--duration-quick) var(--ease-out-quart);
+  padding-bottom: 1px;
 }
+.link-underline:hover,
+.link-underline:focus-visible { background-size: 100% 1px; }
 
-/* Lenis smooth scroll helper classes */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
+/* ==========================================================================
+   GRANO — mucho más barato que antes.
+   Sin mix-blend-mode (forzaba una capa de composición a pantalla completa).
+   ========================================================================== */
 
-/* Noise texture overlay (subtle film-grain feel) */
 .grain {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 9999;
-  will-change: transform;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  z-index: 1;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Glass panel utility */
-.glass {
-  background: color-mix(in srgb, var(--color-surface) 60%, transparent);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid color-mix(in srgb, var(--color-paper) 8%, transparent);
+/* Panel translúcido — reservado para elementos flotantes sobre contenido
+   (navbar, overlays). NO es el fondo por defecto de las tarjetas. */
+.panel {
+  background: color-mix(in srgb, var(--color-ink) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+}
+.glass { /* alias legado — mismas propiedades, sin duplicar valores */
+  background: color-mix(in srgb, var(--color-surface) 62%, transparent);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid var(--color-border);
 }
 
-/* Degradado de texto limpio (va de Blanco Puro a un Gris Elegante) */
 .text-gradient {
   background: linear-gradient(120deg, var(--color-paper) 0%, var(--color-paper-dim) 100%);
   -webkit-background-clip: text;
@@ -127,21 +285,31 @@ html.lenis body {
   color: transparent;
 }
 
-/* Nuevo carrusel horizontal elegante para certificados */
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.snap-inline { scroll-snap-type: inline mandatory; }
+.snap-inline > * { scroll-snap-align: center; }
+
+/* Media: nunca deformada, nunca desbordando */
+img, video, svg { max-width: 100%; display: block; }
+
+/* ==========================================================================
+   REDUCED MOTION
+   No "casi cero duración": se desactiva el movimiento y se preserva
+   la opacidad, para que nada quede invisible.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain { display: none; }
 }
 
-.hide-scrollbar::-webkit-scrollbar {
-  display: none !important;
-}
-
-/* Forzar ancho y alineación en el carrete */
-.snap-inline {
-  scroll-snap-type: inline mandatory;
-}
-
-.snap-inline > * {
-  scroll-snap-align: center;
-}
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto; }
+.lenis.lenis-stopped { overflow: hidden; }

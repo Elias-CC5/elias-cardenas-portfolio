@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import PageHeader from '@/components/ui/PageHeader';
-import SEO from '@/components/layout/SEO';
-import ProjectCard from '@/components/sections/ProjectCard';
-import Reveal from '@/components/ui/Reveal';
-import { useGsapStagger } from '@/hooks/useGsapStagger';
-import { projects, profile } from '@/data/portfolio';
-import { FiGithub } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+import { FiGithub } from 'react-icons/fi';
+import SEO from '@/components/layout/SEO';
+import WorkList from '@/components/sections/WorkList';
+import Button from '@/components/ui/Button';
+import { projects, profile } from '@/data/portfolio';
+import { springSoft } from '@/lib/motion';
 
 type Filter = 'all' | 'completed' | 'in-progress';
 
@@ -16,94 +15,76 @@ const FILTERS: { label: string; value: Filter }[] = [
   { label: 'En curso', value: 'in-progress' },
 ];
 
-export default function Projects() {
-  const gridRef = useGsapStagger<HTMLDivElement>('.project-card-item');
-  const [filter, setFilter] = useState<Filter>('all');
+function matches(status: string, filter: Filter) {
+  if (filter === 'all') return true;
+  if (filter === 'completed') return status === 'completed';
+  return status !== 'completed';
+}
 
-  const filtered = projects.filter((p) => {
-    if (filter === 'all') return true;
-    if (filter === 'completed') return p.status === 'completed';
-    return p.status !== 'completed';
-  });
+export default function Projects() {
+  const [filter, setFilter] = useState<Filter>('all');
+  const filtered = projects.filter((project) => matches(project.status, filter));
 
   return (
     <>
       <SEO
         title={`Proyectos — ${profile.fullName}`}
-        description="Proyectos académicos y personales de desarrollo full stack."
-      />
-      <PageHeader
-        eyebrow="Trabajo realizado"
-        title="Proyectos"
-        description="Proyectos donde aplico arquitectura backend limpia, autenticación segura y interfaces modernas."
+        description="Proyectos full stack en producción y trabajo académico: arquitectura backend, autenticación e interfaces."
       />
 
-      <section className="px-6 pb-28 md:px-12">
-        <div className="mx-auto max-w-6xl">
+      <section className="shell pt-32 pb-28 md:pt-36">
+        <div
+          role="group"
+          aria-label="Filtrar proyectos"
+          className="mb-14 flex flex-wrap items-center gap-1 border-y border-[var(--color-border)] py-3"
+        >
+          {FILTERS.map((option) => {
+            const isActive = filter === option.value;
+            const count = projects.filter((p) => matches(p.status, option.value)).length;
 
-          {/* Filter tabs */}
-          <Reveal className="mb-10 flex items-center gap-2">
-            {FILTERS.map((f) => (
+            return (
               <button
-                key={f.value}
-                onClick={() => setFilter(f.value)}
-                data-cursor-pointer
-                className="relative rounded-full px-4 py-2 font-mono text-xs transition-colors duration-200"
-                style={{ color: filter === f.value ? 'var(--color-paper)' : 'var(--color-muted)' }}
+                key={option.value}
+                type="button"
+                onClick={() => setFilter(option.value)}
+                aria-pressed={isActive}
+                className={`relative rounded-[var(--radius-md)] px-3.5 py-2 text-[0.8125rem] transition-colors duration-[var(--duration-quick)] ${
+                  isActive
+                    ? 'text-[var(--color-paper)]'
+                    : 'text-[var(--color-muted)] hover:text-[var(--color-paper-dim)]'
+                }`}
               >
-                {filter === f.value && (
+                {isActive && (
                   <motion.span
-                    layoutId="filter-pill"
-                    className="absolute inset-0 rounded-full border border-[var(--color-accent-bright)]/40 bg-[var(--color-surface)]"
-                    transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+                    layoutId="project-filter"
+                    transition={springSoft}
+                    className="absolute inset-0 rounded-[var(--radius-md)] bg-[var(--color-surface)]"
                   />
                 )}
-                <span className="relative z-10">{f.label}</span>
-                <span className="relative z-10 ml-1.5 font-mono text-[10px] text-[var(--color-muted)]">
-                  {f.value === 'all'
-                    ? projects.length
-                    : projects.filter((p) =>
-                        f.value === 'completed' ? p.status === 'completed' : p.status !== 'completed'
-                      ).length}
+                <span className="relative z-10">{option.label}</span>
+                <span className="t-num relative z-10 ml-2 text-[0.6875rem] text-[var(--color-muted)]">
+                  {count}
                 </span>
               </button>
-            ))}
-          </Reveal>
+            );
+          })}
+        </div>
 
-          {/* Grid */}
-          <div ref={gridRef} className="grid gap-6 md:grid-cols-2">
-            {filtered.map((project, index) => (
-              <motion.div
-                key={project.id}
-                className="project-card-item"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <ProjectCard project={project} index={index} />
-              </motion.div>
-            ))}
-          </div>
+        {filtered.length > 0 ? (
+          <WorkList key={filter} projects={filtered} />
+        ) : (
+          <p className="border-y border-[var(--color-border)] py-24 text-center text-sm text-[var(--color-muted)]">
+            No hay proyectos en esta categoría.
+          </p>
+        )}
 
-          {filtered.length === 0 && (
-            <div className="py-24 text-center">
-              <p className="font-mono text-sm text-[var(--color-muted)]">No hay proyectos en esta categoría.</p>
-            </div>
-          )}
-
-          {/* GitHub CTA */}
-          <Reveal delay={0.2} className="mt-16 text-center">
-            <p className="text-sm text-[var(--color-paper-dim)]">¿Quieres ver más código?</p>
-            <a
-              href="https://github.com/Elias-CC5"
-              target="_blank"
-              rel="noreferrer"
-              data-cursor-pointer
-              className="mt-3 inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-5 py-2.5 text-sm font-medium text-[var(--color-paper)] transition-colors hover:border-[var(--color-accent-bright)] hover:text-[var(--color-accent-bright)]"
-            >
-              <FiGithub size={15} /> Ver perfil en GitHub
-            </a>
-          </Reveal>
+        <div className="mt-24 flex flex-wrap items-center justify-between gap-6 border-t border-[var(--color-border)] pt-10">
+          <p className="t-h3 max-w-md text-[var(--color-paper-dim)]">
+            El código de la mayoría está público.
+          </p>
+          <Button href="https://github.com/Elias-CC5" external variant="secondary">
+            <FiGithub size={15} aria-hidden="true" /> Ver perfil en GitHub
+          </Button>
         </div>
       </section>
     </>

@@ -1,82 +1,74 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import PageHeader from '@/components/ui/PageHeader';
 import SEO from '@/components/layout/SEO';
 import SkillCard from '@/components/sections/SkillCard';
+import { StaggerGroup, staggerItem } from '@/components/ui/Reveal';
+import { motion } from 'framer-motion';
 import { skills, profile } from '@/data/portfolio';
 import type { SkillCategory } from '@/types';
 
-const CATEGORIES: { key: SkillCategory | 'all'; label: string }[] = [
-  { key: 'all', label: 'Todas' },
-  { key: 'frontend', label: 'Frontend' },
-  { key: 'backend', label: 'Backend' },
-  { key: 'database', label: 'Bases de datos' },
-  { key: 'tools', label: 'Herramientas' },
+const GROUPS: { key: SkillCategory; index: string; label: string; note: string }[] = [
+  { key: 'frontend', index: '01', label: 'Frontend', note: 'Interfaces y experiencia de usuario' },
+  { key: 'backend', index: '02', label: 'Backend', note: 'APIs, autenticación y lógica de negocio' },
+  { key: 'database', index: '03', label: 'Bases de datos', note: 'Modelado, consultas y persistencia' },
+  { key: 'tools', index: '04', label: 'Herramientas', note: 'Entorno de trabajo y despliegue' },
 ];
 
+/**
+ * Se eliminó el filtro por categoría. Con 28 tecnologías repartidas en
+ * cuatro grupos, filtrar esconde información y obliga a hacer clic para
+ * ver algo que cabe entero en una pantalla. Mostrarlas agrupadas comunica
+ * la misma jerarquía sin pedirle nada al visitante.
+ */
 export default function Skills() {
-  const [active, setActive] = useState<SkillCategory | 'all'>('all');
-
-  const filtered = active === 'all' ? skills : skills.filter((s) => s.category === active);
-
   return (
     <>
-      <SEO title={`Habilidades — ${profile.fullName}`} description="Tecnologías y herramientas que domino, organizadas por categoría." />
-      <PageHeader
-        eyebrow="Capacidades técnicas"
-        title="Habilidades"
-        description="Un vistazo a las tecnologías con las que construyo: del frontend a la base de datos."
+      <SEO
+        title={`Habilidades — ${profile.fullName}`}
+        description="Tecnologías con las que construyo: frontend, backend, bases de datos y herramientas."
       />
 
-      <section className="px-6 pb-28 md:px-12">
-        <div className="mx-auto max-w-7xl">
-          {/* Category filters */}
-          <div className="mb-12 flex flex-wrap gap-2">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.key}
-                onClick={() => setActive(cat.key)}
-                data-cursor-pointer
-                className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 ${
-                  active === cat.key ? 'text-[var(--color-ink)]' : 'border border-[var(--color-border)] text-[var(--color-paper-dim)] hover:text-[var(--color-paper)]'
-                }`}
-              >
-                {active === cat.key && (
-                  <motion.span
-                    layoutId="skill-pill"
-                    className="absolute inset-0 rounded-full bg-[var(--color-paper)]"
-                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                  />
-                )}
-                <span className="relative z-10">{cat.label}</span>
-              </button>
-            ))}
-          </div>
+      <PageHeader
+        eyebrow="Capacidades técnicas"
+        title="Stack"
+        description="Del frontend a la base de datos. Ordenado por dónde lo uso, no por cuánto me gusta."
+      />
 
-          {/* Cards grid */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
-            >
-              {filtered.map((skill, i) => (
-                <motion.div
-                  key={skill.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+      <div className="shell pb-24">
+        {GROUPS.map((group) => {
+          const items = skills.filter((skill) => skill.category === group.key);
+          if (items.length === 0) return null;
+
+          return (
+            <section key={group.key} className="border-t border-[var(--color-border)] py-10 md:py-12">
+              <div className="grid gap-6 md:grid-cols-[minmax(0,15rem)_1fr] md:gap-10">
+                <header>
+                  <div className="flex items-baseline gap-3">
+                    <span className="t-num text-xs text-[var(--color-muted)]">{group.index}</span>
+                    <h2 className="t-h3 text-[var(--color-paper)]">{group.label}</h2>
+                  </div>
+                  <p className="mt-2 text-[0.8125rem] leading-relaxed text-[var(--color-muted)]">
+                    {group.note}
+                  </p>
+                  <p className="t-num mt-3 text-xs text-[var(--color-muted)]">
+                    {String(items.length).padStart(2, '0')} tecnologías
+                  </p>
+                </header>
+
+                <StaggerGroup
+                  className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4"
+                  staggerDelay={0.03}
                 >
-                  <SkillCard name={skill.name} index={i} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </section>
+                  {items.map((skill) => (
+                    <motion.div key={`${group.key}-${skill.name}`} variants={staggerItem}>
+                      <SkillCard name={skill.name} />
+                    </motion.div>
+                  ))}
+                </StaggerGroup>
+              </div>
+            </section>
+          );
+        })}
+      </div>
     </>
   );
 }

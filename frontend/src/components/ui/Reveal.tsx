@@ -1,32 +1,39 @@
-import { motion, type Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
+import { fadeUp, staggerContainer, viewportOnce, duration, ease } from '@/lib/motion';
 
 interface RevealProps {
   children: ReactNode;
+  /** Retardo en segundos. Usar con moderación: encadenar reveals hace lenta la lectura. */
   delay?: number;
   className?: string;
+  /** Desplazamiento vertical inicial. */
   y?: number;
-  blur?: boolean;
-  once?: boolean;
 }
 
-export default function Reveal({ children, delay = 0, className, y = 28, blur = true, once = true }: RevealProps) {
-  const variants: Variants = {
-    hidden: { opacity: 0, y, filter: blur ? 'blur(6px)' : 'blur(0px)' },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: 'blur(0px)',
-      transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] },
-    },
-  };
-
+/**
+ * Reveal al entrar al viewport.
+ *
+ * Cambios respecto a la versión anterior:
+ * - Se eliminó el `filter: blur()`. Animar un blur obliga al navegador a
+ *   rasterizar la capa en cada frame y deja el texto sucio a mitad de camino.
+ *   Con opacidad + translate alcanza, y corre en el compositor.
+ * - Duración y easing salen de los tokens, no de literales por componente.
+ */
+export default function Reveal({ children, delay = 0, className, y = 18 }: RevealProps) {
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once, margin: '-80px' }}
-      variants={variants}
+      viewport={viewportOnce}
+      variants={{
+        hidden: { opacity: 0, y },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: duration.slow, delay, ease: ease.outExpo },
+        },
+      }}
       className={className}
     >
       {children}
@@ -40,22 +47,19 @@ interface StaggerProps {
   staggerDelay?: number;
 }
 
-export function StaggerGroup({ children, className, staggerDelay = 0.08 }: StaggerProps) {
-  const container: Variants = {
-    hidden: {},
-    visible: {
-      transition: { staggerChildren: staggerDelay },
-    },
-  };
-
+/** Contenedor de stagger. Cada hijo directo debe llevar `variants={staggerItem}`. */
+export function StaggerGroup({ children, className, staggerDelay = 0.07 }: StaggerProps) {
   return (
-    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }} variants={container} className={className}>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce}
+      variants={staggerContainer(staggerDelay)}
+      className={className}
+    >
       {children}
     </motion.div>
   );
 }
 
-export const staggerItem: Variants = {
-  hidden: { opacity: 0, y: 24, filter: 'blur(4px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
-};
+export const staggerItem = fadeUp;

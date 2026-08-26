@@ -14,9 +14,8 @@ import {
   FiCheck,
 } from 'react-icons/fi';
 import SEO from '@/components/layout/SEO';
-import TextReveal from '@/components/ui/Typewritertext';
 import Reveal, { StaggerGroup, staggerItem } from '@/components/ui/Reveal';
-import MagneticButton from '@/components/ui/MagneticButton';
+import Button from '@/components/ui/Button';
 import ProjectCover from '@/components/sections/ProjectCover';
 import ProjectGallery from '@/components/sections/ProjectGallery';
 import { getSkillIcon } from '@/data/skillIcons';
@@ -29,7 +28,6 @@ export default function ProjectDetail() {
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const glowY = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
   const headerOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.4]);
 
   if (!project) {
@@ -43,17 +41,11 @@ export default function ProjectDetail() {
       <SEO title={`${project.title} — ${profile.fullName}`} description={project.description} />
 
       {/* Hero header with ambient glow */}
-      <div ref={heroRef} className="relative overflow-hidden px-6 pt-32 pb-16 md:px-12 md:pt-40 md:pb-20">
-        <motion.div
-          style={{ y: glowY }}
-          className="pointer-events-none absolute -top-32 left-1/2 h-[420px] w-[680px] -translate-x-1/2 rounded-full bg-[var(--color-accent)]/18 blur-[120px]"
-        />
-
-        <motion.div style={{ opacity: headerOpacity }} className="relative z-10 mx-auto max-w-4xl">
+      <div ref={heroRef} className="relative overflow-hidden pt-32 pb-14 md:pt-40 md:pb-16">
+        <motion.div style={{ opacity: headerOpacity }} className="shell shell-narrow relative z-10">
           <Reveal>
             <Link
               to="/proyectos"
-              data-cursor-pointer
               className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-paper-dim)] transition-colors hover:text-[var(--color-paper)]"
             >
               <FiArrowLeft size={15} /> Volver a proyectos
@@ -81,12 +73,9 @@ export default function ProjectDetail() {
             )}
           </Reveal>
 
-          <TextReveal
-            text={project.title}
-            as="h1"
-            delay={0.16}
-            className="mt-6 font-display text-4xl leading-[1.05] font-bold tracking-tight text-[var(--color-paper)] sm:text-5xl md:text-6xl"
-          />
+          <Reveal delay={0.12}>
+            <h1 className="t-h1 mt-6 text-[var(--color-paper)]">{project.title}</h1>
+          </Reveal>
           {project.context && (
             <Reveal delay={0.4}>
               <p className="mt-4 text-lg text-[var(--color-accent-bright)]">{project.context}</p>
@@ -95,12 +84,11 @@ export default function ProjectDetail() {
         </motion.div>
       </div>
 
-      <article className="px-6 pb-24 md:px-12">
-        <div className="mx-auto max-w-4xl">
+      <article className="pb-24">
+        <div className="shell shell-narrow">
           {/* Cover image / Gallery */}
           <Reveal delay={0.1}>
             <div className="relative">
-              <div className="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-[var(--color-accent)]/15 to-transparent blur-2xl" />
               {project.gallery && project.gallery.length > 0 ? (
                 <ProjectGallery images={project.gallery} title={project.title} />
               ) : (
@@ -115,14 +103,14 @@ export default function ProjectDetail() {
           {(project.repoUrl || project.demoUrl) && (
             <Reveal delay={0.18} className="mt-7 flex flex-wrap gap-3">
               {project.repoUrl && (
-                <MagneticButton variant="secondary" href={project.repoUrl} target="_blank">
+                <Button variant="secondary" href={project.repoUrl} external>
                   <FiGithub size={15} /> Ver repositorio
-                </MagneticButton>
+                </Button>
               )}
               {project.demoUrl && (
-                <MagneticButton variant="primary" href={project.demoUrl} target="_blank">
+                <Button variant="primary" href={project.demoUrl} external>
                   <FiExternalLink size={15} /> Ver demo
-                </MagneticButton>
+                </Button>
               )}
             </Reveal>
           )}
@@ -216,7 +204,6 @@ export default function ProjectDetail() {
                   <motion.div key={p.slug} variants={staggerItem}>
                     <Link
                       to={`/proyectos/${p.slug}`}
-                      data-cursor-pointer
                       className="group block h-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent-bright)]/40"
                     >
                       <p className="font-display text-lg font-semibold text-[var(--color-paper)] transition-colors group-hover:text-[var(--color-accent-bright)]">

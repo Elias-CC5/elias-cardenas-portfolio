@@ -64,7 +64,7 @@ export const skillIconMap: Record<string, IconConfig> = {
   'Next.js': { icon: SiNextdotjs, color: '#FFFFFF' },
   JavaScript: { icon: SiJavascript, color: '#F7DF1E' },
    // Herramientas de desarrollo
-  'IntelliJ IDEA': { icon: SiIntellijidea, color: '#000000' },
+  'IntelliJ IDEA': { icon: SiIntellijidea, color: '#fe2857' },
   'Android Studio': { icon: DiAndroid, color: '#3DDC84' },
   Xcode: { icon: SiXcode, color: '#147EFB' },
   Postman: { icon: SiPostman, color: '#FF6C37' },

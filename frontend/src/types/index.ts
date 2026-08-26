@@ -45,6 +45,14 @@ export interface Project {
   teamType: 'individual' | 'team';
   myRole: string;
   context?: string; // e.g. "Proyecto de tesis", "Proyecto académico TECSUP"
+  /**
+   * true cuando el proyecto se hizo para una empresa real (no académico).
+   * Es un campo propio a propósito: la cabecera de /proyectos afirma
+   * "N de estos 5 los usa una empresa de verdad", y esa cifra no puede
+   * depender de buscar la palabra "TECSUP" dentro de un texto libre que
+   * cambia cada vez que se reescribe una descripción.
+   */
+  realClient?: boolean;
   coverImage?: string;
   gallery?: GalleryImage[];
   repoUrl?: string;
@@ -70,4 +78,19 @@ export interface EducationItem {
 export interface Stat {
   value: string;
   label: string;
+}
+export interface Certificate {
+  id: string;
+  title: string;
+  issuer: string;
+  issueDate: string;
+  category: string;
+  description?: string;
+  credentialId?: string;
+  credentialUrl: string;
+  /** Ruta al logo del emisor, relativa a /public. */
+  logo?: string;
+  /** Color de marca del emisor. Es el único sitio del sitio donde entra
+      color ajeno a la paleta, y se usa sólo dentro de la tarjeta. */
+  color?: string;
 }

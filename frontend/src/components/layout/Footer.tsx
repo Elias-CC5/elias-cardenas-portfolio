@@ -1,93 +1,104 @@
 import { Link } from 'react-router-dom';
-import { FiGithub, FiLinkedin, FiMail, FiArrowUpRight } from 'react-icons/fi';
+import { FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
+import type { IconType } from 'react-icons';
 import { profile } from '@/data/portfolio';
+import { NAV_LINKS } from '@/lib/nav';
 
-const ICONS = {
+const SOCIAL_ICONS: Record<string, IconType> = {
   github: FiGithub,
   linkedin: FiLinkedin,
   email: FiMail,
-  phone: FiMail,
 };
 
+/**
+ * Pie de página.
+ *
+ * Los enlaces de navegación se leen de `NAV_LINKS`: antes había una segunda
+ * lista escrita a mano acá, así que añadir una página obligaba a acordarse
+ * de tocar dos archivos.
+ */
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="relative border-t border-[var(--color-border)] bg-[var(--color-ink)] px-6 py-16 md:px-12">
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
+    <footer className="relative z-[2] border-t border-[var(--color-border)] bg-[var(--color-ink)]">
+      <div className="shell py-14">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
           <div>
-            <Link to="/" className="font-display text-2xl font-bold text-[var(--color-paper)]">
-              Elías Cárdenas
-            </Link>
-            <p className="mt-3 max-w-sm text-sm leading-relaxed text-[var(--color-paper-dim)]">
-              {profile.shortAbout}
+            <p className="font-display text-lg font-semibold text-[var(--color-paper)]">
+              {profile.fullName}
             </p>
-            <div className="mt-5 flex gap-3">
+            <p className="t-num mt-1 text-xs text-[var(--color-muted)]">
+              {profile.role} · {profile.location}
+            </p>
+
+            <div className="mt-6 flex gap-2">
               {profile.socials
-                .filter((s) => s.icon === 'github' || s.icon === 'linkedin' || s.icon === 'email')
+                .filter((social) => social.icon in SOCIAL_ICONS)
                 .map((social) => {
-                  const Icon = ICONS[social.icon];
+                  const Icon = SOCIAL_ICONS[social.icon];
                   return (
                     <a
                       key={social.label}
                       href={social.url}
                       target={social.url.startsWith('http') ? '_blank' : undefined}
-                      rel="noreferrer"
-                      className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-paper-dim)] transition-all duration-300 hover:border-[var(--color-accent)] hover:text-[var(--color-accent-bright)]"
+                      rel="noreferrer noopener"
                       aria-label={social.label}
+                      className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-paper-dim)] transition-colors duration-[var(--duration-quick)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-paper)]"
                     >
-                      <Icon size={16} />
+                      <Icon size={15} aria-hidden="true" />
                     </a>
                   );
                 })}
             </div>
           </div>
 
-          <div>
-            <p className="font-mono text-xs uppercase tracking-wider text-[var(--color-muted)]">Navegación</p>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              {[
-                { to: '/sobre-mi', label: 'Sobre mí' },
-                { to: '/proyectos', label: 'Proyectos' },
-                { to: '/experiencia', label: 'Experiencia' },
-                { to: '/habilidades', label: 'Skills' },
-                { to: '/contacto', label: 'Contacto' },
-              ].map((l) => (
-                <li key={l.to}>
-                  <Link to={l.to} className="text-[var(--color-paper-dim)] transition-colors hover:text-[var(--color-paper)]">
-                    {l.label}
+          <nav aria-label="Pie de página">
+            <p className="t-label text-[var(--color-muted)]">Navegación</p>
+            <ul className="mt-4 space-y-2.5">
+              {NAV_LINKS.filter((link) => link.to !== '/').map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="link-underline text-sm text-[var(--color-paper-dim)] transition-colors duration-[var(--duration-quick)] hover:text-[var(--color-paper)]"
+                  >
+                    {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
           <div>
-            <p className="font-mono text-xs uppercase tracking-wider text-[var(--color-muted)]">Contacto</p>
+            <p className="t-label text-[var(--color-muted)]">Contacto</p>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
-                <a href={`mailto:${profile.email}`} className="text-[var(--color-paper-dim)] transition-colors hover:text-[var(--color-paper)]">
+                <a
+                  href={`mailto:${profile.email}`}
+                  className="link-underline text-[var(--color-paper-dim)] transition-colors hover:text-[var(--color-paper)]"
+                >
                   {profile.email}
                 </a>
               </li>
               <li>
-                <a href={`tel:${profile.phone.replace(/\s/g, '')}`} className="text-[var(--color-paper-dim)] transition-colors hover:text-[var(--color-paper)]">
+                <a
+                  href={`tel:${profile.phone.replace(/\s/g, '')}`}
+                  className="link-underline text-[var(--color-paper-dim)] transition-colors hover:text-[var(--color-paper)]"
+                >
                   {profile.phone}
                 </a>
               </li>
-              <li className="text-[var(--color-paper-dim)]">{profile.location}</li>
             </ul>
-            <Link
-              to="/contacto"
-              className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-accent-bright)] transition-colors hover:text-[var(--color-paper)]"
-            >
-              Iniciar conversación <FiArrowUpRight size={14} />
-            </Link>
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-[var(--color-border)] pt-6 text-xs text-[var(--color-muted)] md:flex-row">
-          <p>© {new Date().getFullYear()} Elías Salomón Cárdenas Cuellar. Todos los derechos reservados.</p>
-          <p className="font-mono">Diseñado y construido con React + TypeScript</p>
+        <div className="mt-12 flex flex-col gap-2 border-t border-[var(--color-border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="t-num text-[0.6875rem] text-[var(--color-muted)]">
+            © {year} {profile.fullName}
+          </p>
+          <p className="t-num text-[0.6875rem] text-[var(--color-muted)]">
+            React · TypeScript · Vite
+          </p>
         </div>
       </div>
     </footer>

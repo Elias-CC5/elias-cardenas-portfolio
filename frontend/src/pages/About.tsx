@@ -1,6 +1,7 @@
-import { useRef, useState, useCallback, type MouseEvent } from 'react';
+import { useRef, useCallback, type MouseEvent } from 'react';
 import PageHeader from '@/components/ui/PageHeader';
 import Reveal, { StaggerGroup, staggerItem } from '@/components/ui/Reveal';
+import TiltPanel from '@/components/ui/TiltPanel';
 import SEO from '@/components/layout/SEO';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { profile, stats, education, certificates, techStackCore } from '@/data/portfolio';
@@ -24,48 +25,6 @@ const PRINCIPLES = [
     text: 'Construyo pensando en quién va a mantener este código en seis meses — probablemente yo mismo.',
   },
 ];
-
-function TiltCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [rotate, setRotate] = useState({ x: 0, y: 0 });
-  const [glow, setGlow] = useState({ x: 50, y: 50 });
-  const [hovered, setHovered] = useState(false);
-
-  const handleMove = useCallback((e: MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width;
-    const py = (e.clientY - rect.top) / rect.height;
-    setRotate({ x: (py - 0.5) * -8, y: (px - 0.5) * 8 });
-    setGlow({ x: px * 100, y: py * 100 });
-  }, []);
-
-  const handleLeave = useCallback(() => {
-    setRotate({ x: 0, y: 0 });
-    setHovered(false);
-  }, []);
-
-  return (
-    <div ref={ref} onMouseMove={handleMove} onMouseEnter={() => setHovered(true)} onMouseLeave={handleLeave} style={{ perspective: 1000 }}>
-      <motion.div
-        animate={{ rotateX: rotate.x, rotateY: rotate.y }}
-        transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-        style={{ transformStyle: 'preserve-3d' }}
-        className={`relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors duration-300 hover:border-[var(--color-accent-bright)]/60 ${className}`}
-      >
-        <div
-          className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-          style={{
-            opacity: hovered ? 1 : 0,
-            background: `radial-gradient(240px circle at ${glow.x}% ${glow.y}%, color-mix(in srgb, var(--color-accent) 20%, transparent), transparent 70%)`,
-          }}
-        />
-        <div className="relative z-10">{children}</div>
-      </motion.div>
-    </div>
-  );
-}
 
 function Photo3D({ src, alt }: { src: string; alt: string }) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -128,22 +87,16 @@ function Photo3D({ src, alt }: { src: string; alt: string }) {
 export default function About() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const glowY = useTransform(scrollYProgress, [0, 1], ['0%', '35%']);
   const photoY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
   return (
     <>
       <SEO title={`Sobre mí — ${profile.fullName}`} description={profile.about} />
 
-      <div ref={heroRef} className="relative overflow-hidden px-6 pt-32 pb-24 md:px-12 md:pt-40">
+      <div ref={heroRef} className="relative overflow-hidden pt-32 pb-24 md:pt-40">
         
-        <motion.div
-          style={{ y: glowY }}
-          className="pointer-events-none absolute -top-40 left-1/3 h-[350px] w-[500px] -translate-x-1/2 rounded-full bg-[var(--color-accent)]/12 blur-[90px]"
-        />
-        <div className="pointer-events-none absolute top-1/2 right-0 h-[300px] w-[400px] -translate-y-1/2 rounded-full bg-[var(--color-accent)]/6 blur-[100px]" />
 
-        <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="shell relative z-10">
           <PageHeader eyebrow="Quién soy" title="Sobre mí" noPadding />
 
           <div className="mt-12 grid gap-16 lg:grid-cols-[1fr_1.3fr]">
@@ -160,10 +113,10 @@ export default function About() {
                 <StaggerGroup className="mt-6 grid grid-cols-3 gap-3">
                   {stats.map((stat) => (
                     <motion.div key={stat.label} variants={staggerItem}>
-                      <TiltCard className="p-4 text-center">
+                      <TiltPanel className="p-4 text-center">
                         <p className="font-display text-2xl font-bold text-[var(--color-paper)]">{stat.value}</p>
                         <p className="mt-1 text-[11px] leading-tight text-[var(--color-muted)]">{stat.label}</p>
-                      </TiltCard>
+                      </TiltPanel>
                     </motion.div>
                   ))}
                 </StaggerGroup>
@@ -214,7 +167,7 @@ export default function About() {
                   const Icon = p.icon;
                   return (
                     <motion.div key={p.title} variants={staggerItem}>
-                      <TiltCard className="flex items-start gap-4 p-5">
+                      <TiltPanel className="flex items-start gap-4 p-5">
                         <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-accent)]/15 text-[var(--color-accent-bright)]">
                           <Icon size={17} />
                         </div>
@@ -222,7 +175,7 @@ export default function About() {
                           <p className="font-display font-semibold text-[var(--color-paper)]">{p.title}</p>
                           <p className="mt-1 text-sm leading-relaxed text-[var(--color-paper-dim)]">{p.text}</p>
                         </div>
-                      </TiltCard>
+                      </TiltPanel>
                     </motion.div>
                   );
                 })}
@@ -267,9 +220,9 @@ export default function About() {
             </Reveal>
 
             <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {certificates.map((cert: any, i) => {
+              {certificates.map((cert, i) => {
                 const cardColor = cert.color || 'var(--color-accent-bright)';
-                const fullLogoUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}${cert.logo}`;
+                const fullLogoUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}${cert.logo ?? ''}`;
                 
                 return (
                   <Reveal key={cert.id} delay={0.1 + i * 0.04}>

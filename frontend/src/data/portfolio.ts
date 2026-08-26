@@ -1,4 +1,12 @@
-import type { Profile, Skill, Project, ExperienceItem, EducationItem, Stat } from '@/types';
+import type {
+  Profile,
+  Skill,
+  Project,
+  ExperienceItem,
+  EducationItem,
+  Stat,
+  Certificate,
+} from '@/types';
 
 export const profile: Profile = {
   fullName: 'Elías Salomón Cárdenas Cuellar',
@@ -22,7 +30,7 @@ export const profile: Profile = {
 };
 
 export const stats: Stat[] = [
-  { value: '3', label: 'Proyectos completados' },
+  { value: '5', label: 'Proyectos completados' },
   { value: '2+', label: 'Años de experiencia' },
   { value: '5', label: 'Tech stack core' },
 ];
@@ -63,10 +71,103 @@ export const skills: Skill[] = [
 ];
 
 export const projects: Project[] = [
-    {
+  {
+    id: 'pyfgroup-alquileres',
+    slug: 'pyfgroup-alquileres',
+    title: 'PyFGroup — Plataforma de Alquiler de Alojamientos',
+    period: '2026',
+    description:
+      'Plataforma web de alquiler de alojamientos vacacionales en Perú (tipo Airbnb) para PONCE & FIGUEROA GROUP S.A.C., con búsqueda, reservas, reseñas y panel de administración.',
+    longDescription:
+      'PyFGroup es una plataforma real de alquiler de departamentos amoblados y alojamientos turísticos en Perú, en producción bajo el dominio propio pyfgroup.com. Los usuarios buscan alojamientos por departamento, provincia y distrito, filtran por fechas, huéspedes, precio y amenidades, revisan la galería y las reseñas, guardan favoritos y reservan verificando la disponibilidad en tiempo real; el contacto directo con el anfitrión se resuelve por WhatsApp. Del lado interno, un panel de administración con métricas y gráficos permite gestionar alojamientos, reservas, usuarios y planes. Construí el proyecto completo con arquitectura cliente-servidor estrictamente separada: toda la regla de negocio (disponibilidad, precios, permisos) vive en la API de NestJS y el frontend Next.js solo la consume.',
+    features: [
+      'Búsqueda de alojamientos con filtros por ubicación, fechas, huéspedes, precio y amenidades',
+      'Reservas con verificación de disponibilidad en tiempo real, sin doble reserva',
+      'Reseñas, favoritos y galería de imágenes por alojamiento',
+      'Autenticación JWT con refresh rotativo en cookie HttpOnly y login social (Google / GitHub)',
+      'Roles jerárquicos USER · HOST · ADMIN · SUPER_ADMIN con guard global',
+      'Panel de administración con dashboard, métricas y gráficos de reservas',
+      'Contacto directo por WhatsApp y planes mensuales para anfitriones',
+      'SEO real: slugs, metadata dinámica, Open Graph, JSON-LD, sitemap y robots.txt',
+    ],
+    bullets: [
+      'Diseño de la arquitectura cliente-servidor separada (NestJS + Next.js) y del modelo de datos con Prisma',
+      'API REST modular documentada con Swagger, validación con class-validator y rate limiting',
+      'Seguridad: Argon2id, refresh tokens hasheados y rotativos, Helmet, CORS por lista blanca y borrado lógico',
+      'Servicio de disponibilidad como fuente única de verdad, revalidando dentro de la transacción',
+      'Frontend Next.js 15 (App Router) por features, con estados de carga, vacío y error en cada vista',
+      'Despliegue en producción: frontend en Vercel, API en Render y base de datos PostgreSQL en Neon',
+    ],
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'TanStack Query', 'Zustand', 'Framer Motion', 'NestJS', 'Node.js', 'Prisma', 'PostgreSQL', 'JWT', 'Passport', 'Cloudinary', 'Docker', 'Swagger'],
+    status: 'completed',
+    teamType: 'individual',
+    myRole: 'Arquitectura, backend y frontend',
+    context: 'PyFGroup — Ponce & Figueroa Group S.A.C.',
+    realClient: true,
+    demoUrl: 'https://www.pyfgroup.com',
+    coverImage: '/images/pyfgroup/imagen01.jpg',
+    gallery: [
+      { src: '/images/pyfgroup/imagen01.jpg', label: 'Portada — Bienvenido a P&F Group' },
+      { src: '/images/pyfgroup/imagen02.jpg', label: 'Estadías destacadas' },
+      { src: '/images/pyfgroup/imagen03.jpg', label: 'Buscador de alojamientos con filtros' },
+      { src: '/images/pyfgroup/imagen07.jpg', label: 'Destinos por región' },
+      { src: '/images/pyfgroup/imagen04.jpg', label: 'Detalle del alojamiento' },
+      { src: '/images/pyfgroup/imagen05.jpg', label: 'Ficha, amenidades y reserva' },
+      { src: '/images/pyfgroup/imagen06.jpg', label: 'Ubicación y reglas de la casa' },
+      { src: '/images/pyfgroup/imagen09.jpg', label: 'Inicio de sesión con Google y GitHub' },
+      { src: '/images/pyfgroup/imagen08.jpg', label: 'Nosotros — la empresa' },
+    ],
+  },
+  {
+    id: 'coffee-vibes',
+    slug: 'coffee-vibes',
+    title: 'Coffee Vibes — E-commerce de Café',
+    period: '2026',
+    description:
+      'E-commerce de café de especialidad desarrollado para una empresa real, con catálogo, checkout y pagos integrados mediante Mercado Pago.',
+    longDescription:
+      'Coffee Vibes es una tienda en línea para una empresa real de café de especialidad, donde los clientes pueden explorar el catálogo de café molido, bebidas preparadas y accesorios, armar su pedido, elegir entre recojo en tienda o delivery, y pagar de forma segura con Mercado Pago (Checkout Pro). Incluye un panel de administración para gestionar productos, categorías y pedidos. Desarrollé el proyecto de forma individual: base de datos, backend y frontend.',
+    features: [
+      'Catálogo de productos con filtros por categoría y tipo',
+      'Carrito de compras y checkout completo',
+      'Seguimiento de pedidos con estados (pendiente, pagado, en preparación, listo, entregado)',
+      'Pago en línea integrado con Mercado Pago (Checkout Pro)',
+      'Autenticación de usuarios con roles (cliente, dueño, administrador)',
+      'Panel de administración para productos, categorías y pedidos',
+      'Gestión de direcciones de entrega',
+    ],
+    bullets: [
+      'Diseño y modelado de la base de datos con Prisma + PostgreSQL',
+      'Desarrollo del backend con Node.js + Express',
+      'Desarrollo del frontend con Next.js + Tailwind CSS',
+      'Integración de pagos con Mercado Pago SDK',
+    ],
+    tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Zustand', 'Node.js', 'Express', 'PostgreSQL', 'Prisma'],
+    status: 'completed',
+    teamType: 'individual',
+    myRole: 'Base de datos, backend y frontend',
+    context: 'Empresa de café de especialidad — cliente real',
+    realClient: true,
+    repoUrl: 'https://github.com/FAILO123/Coffee-shop-with-Mercado-Pago',
+    gallery: [
+      { src: '/images/Coffee%20Vibes/Paginaprincipal.png', label: 'Página principal' },
+      { src: '/images/Coffee%20Vibes/Catálogo.png', label: 'Catálogo' },
+      { src: '/images/Coffee%20Vibes/CATEGORIAS.png', label: 'Categorías' },
+      { src: '/images/Coffee%20Vibes/Ingresa%20a%20tu%20cuenta.png', label: 'Inicio de sesión' },
+      { src: '/images/Coffee%20Vibes/pedidosuser.png', label: 'Pedidos del usuario' },
+      { src: '/images/Coffee%20Vibes/ver%20pedidos.png', label: 'Ver pedidos' },
+      { src: '/images/Coffee%20Vibes/Confirma%20tu%20pedido.png', label: 'Confirmar pedido' },
+      { src: '/images/Coffee%20Vibes/Cómo%20quieres%20pagar.png', label: 'Método de pago' },
+      { src: '/images/Coffee%20Vibes/Checkout.png', label: 'Checkout' },
+      { src: '/images/Coffee%20Vibes/Resumen%20.png', label: 'Resumen del pedido' },
+      { src: '/images/Coffee%20Vibes/Avanzar%20estado%20del%20pedido.png', label: 'Estado del pedido (admin)' },
+      { src: '/images/Coffee%20Vibes/Crear%20Producto(Admin).png', label: 'Crear producto (admin)' },
+    ],
+  },
+  {
     id: 'tesis-catering',
     slug: 'tesis-catering',
-    title: 'E-commerce para Empresa de Catering ',
+    title: 'E-commerce para Empresa de Catering',
     period: '2026',
     description:
       'E-commerce desarrollado como proyecto de tesis para una empresa real de catering, donde los usuarios exploran productos y hacen reservas, con un panel de administración completo y chatbot integrado.',
@@ -87,7 +188,8 @@ export const projects: Project[] = [
     status: 'completed',
     teamType: 'team',
     myRole: 'Diseño de frontend',
-    context: 'Proyecto de tesis — Empresa de catering',
+    context: 'Empresa de catering — cliente real · Tesis TECSUP',
+    realClient: true,
     repoUrl: 'https://github.com/Jefferson-BA/TesisFrontend',
     gallery: [
       { src: '/images/E-COMMERCE/INICIO.png', label: 'Inicio' },
@@ -106,24 +208,6 @@ export const projects: Project[] = [
       { src: '/images/E-COMMERCE/Panel%20de%20Administración.png', label: 'Panel de administración' },
       { src: '/images/E-COMMERCE/Promociones.png', label: 'Promociones' },
     ],
-  },
-  {
-    id: 'gestion-pedidos',
-    slug: 'gestion-pedidos',
-    title: 'Sistema Web de Gestión de Pedidos',
-    period: '2025 - 2025',
-    description: 'Aplicación Full Stack para administrar pedidos y clientes, con autenticación segura y arquitectura REST.',
-    bullets: [
-      'Desarrollé una aplicación Full Stack para administrar pedidos y clientes',
-      'Implementé autenticación JWT',
-      'Diseñé APIs REST con Node.js y NestJS',
-      'Base de datos PostgreSQL',
-    ],
-    tech: ['React', 'Node.js', 'NestJS', 'PostgreSQL'],
-    status: 'completed',
-    teamType: 'individual',
-    myRole: 'Desarrollo Full Stack',
-    context: 'Proyecto académico — TECSUP',
   },
   {
     id: 'apuestas-jwv',
@@ -164,51 +248,23 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 'coffee-vibes',
-    slug: 'coffee-vibes',
-    title: 'Coffee Vibes — E-commerce de Café',
-    period: '2026',
-    description:
-      'E-commerce de café de especialidad desarrollado para una empresa real, con catálogo, checkout y pagos integrados mediante Mercado Pago.',
-    longDescription:
-      'Coffee Vibes es una tienda en línea para una empresa real de café de especialidad, donde los clientes pueden explorar el catálogo de café molido, bebidas preparadas y accesorios, armar su pedido, elegir entre recojo en tienda o delivery, y pagar de forma segura con Mercado Pago (Checkout Pro). Incluye un panel de administración para gestionar productos, categorías y pedidos. Desarrollé el proyecto de forma individual: base de datos, backend y frontend.',
-    features: [
-      'Catálogo de productos con filtros por categoría y tipo',
-      'Carrito de compras y checkout completo',
-      'Seguimiento de pedidos con estados (pendiente, pagado, en preparación, listo, entregado)',
-      'Pago en línea integrado con Mercado Pago (Checkout Pro)',
-      'Autenticación de usuarios con roles (cliente, dueño, administrador)',
-      'Panel de administración para productos, categorías y pedidos',
-      'Gestión de direcciones de entrega',
-    ],
+    id: 'gestion-pedidos',
+    slug: 'gestion-pedidos',
+    title: 'Sistema Web de Gestión de Pedidos',
+    period: '2025 - 2025',
+    description: 'Aplicación Full Stack para administrar pedidos y clientes, con autenticación segura y arquitectura REST.',
     bullets: [
-      'Diseño y modelado de la base de datos con Prisma + PostgreSQL',
-      'Desarrollo del backend con Node.js + Express',
-      'Desarrollo del frontend con Next.js + Tailwind CSS',
-      'Integración de pagos con Mercado Pago SDK',
+      'Desarrollé una aplicación Full Stack para administrar pedidos y clientes',
+      'Implementé autenticación JWT',
+      'Diseñé APIs REST con Node.js y NestJS',
+      'Base de datos PostgreSQL',
     ],
-    tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Zustand', 'Node.js', 'Express', 'PostgreSQL', 'Prisma'],
+    tech: ['React', 'Node.js', 'NestJS', 'PostgreSQL'],
     status: 'completed',
     teamType: 'individual',
-    myRole: 'Base de datos, backend y frontend',
-    context: 'Proyecto para empresa real de café',
-    repoUrl: 'https://github.com/FAILO123/Coffee-shop-with-Mercado-Pago',
-    gallery: [
-      { src: '/images/Coffee%20Vibes/Paginaprincipal.png', label: 'Página principal' },
-      { src: '/images/Coffee%20Vibes/Catálogo.png', label: 'Catálogo' },
-      { src: '/images/Coffee%20Vibes/CATEGORIAS.png', label: 'Categorías' },
-      { src: '/images/Coffee%20Vibes/Ingresa%20a%20tu%20cuenta.png', label: 'Inicio de sesión' },
-      { src: '/images/Coffee%20Vibes/pedidosuser.png', label: 'Pedidos del usuario' },
-      { src: '/images/Coffee%20Vibes/ver%20pedidos.png', label: 'Ver pedidos' },
-      { src: '/images/Coffee%20Vibes/Confirma%20tu%20pedido.png', label: 'Confirmar pedido' },
-      { src: '/images/Coffee%20Vibes/Cómo%20quieres%20pagar.png', label: 'Método de pago' },
-      { src: '/images/Coffee%20Vibes/Checkout.png', label: 'Checkout' },
-      { src: '/images/Coffee%20Vibes/Resumen%20.png', label: 'Resumen del pedido' },
-      { src: '/images/Coffee%20Vibes/Avanzar%20estado%20del%20pedido.png', label: 'Estado del pedido (admin)' },
-      { src: '/images/Coffee%20Vibes/Crear%20Producto(Admin).png', label: 'Crear producto (admin)' },
-    ],
+    myRole: 'Desarrollo Full Stack',
+    context: 'Proyecto académico — TECSUP',
   },
-
 ];
 
 export const experience: ExperienceItem[] = [
@@ -236,7 +292,7 @@ export const education: EducationItem[] = [
   },
 ];
 
-export const certificates = [
+export const certificates: Certificate[] = [
   {
     id: 'cisco-cybersecurity',
     title: 'Introduction to Cybersecurity',
@@ -310,4 +366,4 @@ export const certificates = [
     color: '#FF9900'
   },
 ];
-export const techStackCore = ['React', 'Astro', 'Node.js', 'NestJS', 'PostgreSQL', 'MySQL', 'MongoDB', 'Git'];
+export const techStackCore: string[] = ['React', 'Astro', 'Node.js', 'NestJS', 'PostgreSQL', 'MySQL', 'MongoDB', 'Git'];

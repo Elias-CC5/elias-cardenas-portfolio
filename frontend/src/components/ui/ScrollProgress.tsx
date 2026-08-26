@@ -1,13 +1,19 @@
 import { motion, useScroll, useSpring } from 'framer-motion';
 
+/**
+ * Barra de progreso de lectura — uso #1 del color señal.
+ * Antes era un degradado de blanco a blanco a blanco (los tres tokens de
+ * acento valían #ffffff), así que se veía como una línea blanca plana.
+ */
 export default function ScrollProgress() {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 300, damping: 40, mass: 0.2 });
+  const scaleX = useSpring(scrollYProgress, { stiffness: 260, damping: 40, mass: 0.25 });
 
   return (
     <motion.div
-      className="fixed top-0 left-0 z-[60] h-[2px] w-full origin-left bg-gradient-to-r from-[var(--color-accent)] via-[var(--color-accent-bright)] to-[var(--color-success)]"
+      aria-hidden="true"
       style={{ scaleX }}
+      className="fixed inset-x-0 top-0 z-[70] h-px origin-left bg-[var(--color-signal)]"
     />
   );
 }

@@ -84,7 +84,6 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
         {!currentFailed && (
           <button
             onClick={() => setLightboxOpen(true)}
-            data-cursor-pointer
             aria-label="Ver en pantalla completa"
             className="glass absolute top-4 left-4 flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-paper-dim)] transition-colors hover:text-[var(--color-paper)]"
           >
@@ -97,7 +96,6 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
           <>
             <button
               onClick={prev}
-              data-cursor-pointer
               aria-label="Anterior"
               className="absolute top-1/2 left-3 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-ink)]/60 text-[var(--color-paper)] backdrop-blur-sm transition-colors hover:bg-[var(--color-ink)]/90"
             >
@@ -105,7 +103,6 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
             </button>
             <button
               onClick={next}
-              data-cursor-pointer
               aria-label="Siguiente"
               className="absolute top-1/2 right-3 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-ink)]/60 text-[var(--color-paper)] backdrop-blur-sm transition-colors hover:bg-[var(--color-ink)]/90"
             >
@@ -122,7 +119,6 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
             <button
               key={img.src}
               onClick={() => goTo(i, i > index ? 1 : -1)}
-              data-cursor-pointer
               className={`relative h-14 w-24 shrink-0 overflow-hidden rounded-lg border bg-[var(--color-surface)] transition-all duration-200 ${
                 i === index ? 'border-[var(--color-accent-bright)] opacity-100' : 'border-[var(--color-border)] opacity-40 hover:opacity-75'
               }`}
@@ -158,7 +154,6 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
           >
             <button
               onClick={() => setLightboxOpen(false)}
-              data-cursor-pointer
               aria-label="Cerrar"
               className="absolute top-6 right-6 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-paper)] transition-colors hover:bg-[var(--color-surface)]"
             >
