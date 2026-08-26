@@ -79,7 +79,7 @@ export const projects: Project[] = [
     description:
       'Plataforma web de alquiler de alojamientos vacacionales en Perú (tipo Airbnb) para PONCE & FIGUEROA GROUP S.A.C., con búsqueda, reservas, reseñas y panel de administración.',
     longDescription:
-      'PyFGroup es una plataforma real de alquiler de departamentos amoblados y alojamientos turísticos en Perú, en producción bajo el dominio propio pyfgroup.com. Los usuarios buscan alojamientos por departamento, provincia y distrito, filtran por fechas, huéspedes, precio y amenidades, revisan la galería y las reseñas, guardan favoritos y reservan verificando la disponibilidad en tiempo real; el contacto directo con el anfitrión se resuelve por WhatsApp. Del lado interno, un panel de administración con métricas y gráficos permite gestionar alojamientos, reservas, usuarios y planes. Construí el proyecto completo con arquitectura cliente-servidor estrictamente separada: toda la regla de negocio (disponibilidad, precios, permisos) vive en la API de NestJS y el frontend Next.js solo la consume.',
+      'PyFGroup es una plataforma real de alquiler de departamentos amoblados y alojamientos turísticos en Perú, en producción bajo el dominio propio pyfgroup.com. Los usuarios buscan alojamientos por departamento, provincia y distrito, filtran por fechas, huéspedes, precio y amenidades, revisan la galería y las reseñas, guardan favoritos y reservan verificando la disponibilidad en tiempo real; el contacto directo con el anfitrión se resuelve por WhatsApp. Del lado interno, un panel de administración con métricas y gráficos permite gestionar alojamientos, reservas, usuarios y planes. Construí el proyecto completo con arquitectura cliente-servidor strictly separada: toda la regla de negocio (disponibilidad, precios, permisos) vive en la API de NestJS y el frontend Next.js solo la consume.',
     features: [
       'Búsqueda de alojamientos con filtros por ubicación, fechas, huéspedes, precio y amenidades',
       'Reservas con verificación de disponibilidad en tiempo real, sin doble reserva',
@@ -105,6 +105,7 @@ export const projects: Project[] = [
     context: 'PyFGroup — Ponce & Figueroa Group S.A.C.',
     realClient: true,
     demoUrl: 'https://www.pyfgroup.com',
+    repoUrl: 'https://github.com/Elias-CC5/Airbnb-PyFGroup',
     coverImage: '/images/pyfgroup/imagen01.jpg',
     gallery: [
       { src: '/images/pyfgroup/imagen01.jpg', label: 'Portada — Bienvenido a P&F Group' },
@@ -116,6 +117,52 @@ export const projects: Project[] = [
       { src: '/images/pyfgroup/imagen06.jpg', label: 'Ubicación y reglas de la casa' },
       { src: '/images/pyfgroup/imagen09.jpg', label: 'Inicio de sesión con Google y GitHub' },
       { src: '/images/pyfgroup/imagen08.jpg', label: 'Nosotros — la empresa' },
+    ],
+  },
+  {
+    id: 'Hojas de parra',
+    slug: 'Hojas de parra',
+    title: 'Hoja de Parra Spitz — Catering y Parrillas',
+    period: '2026',
+    description:
+      'Plataforma web para una empresa peruana de catering y parrillas: catálogo de servicios, sistema de reservas conectado a WhatsApp y panel de administración.',
+    longDescription:
+      'Hoja de Parra Spitz es una empresa peruana de catering y parrillas con buffet árabe, buffet parrillero, eventos privados y corporativos. La plataforma reúne el catálogo de servicios, la galería y los testimonios, y resuelve el punto que más le costaba al negocio: la cotización. El visitante arma su pedido en el formulario de reservas, los datos quedan guardados en PostgreSQL y el sistema genera automáticamente el mensaje de WhatsApp con toda la información ya cargada, de modo que la conversación con el cliente arranca con el pedido completo en vez de con un "hola, quisiera cotizar". Un panel de administración gestiona reservas, productos, servicios, galería, testimonios y mensajes de contacto.',
+    features: [
+      'Catálogo de servicios: buffet árabe, buffet parrillero, eventos y parrillas',
+      'Sistema de reservas y cotización con persistencia en PostgreSQL',
+      'Generación automática del mensaje de WhatsApp con los datos del pedido',
+      'Panel de administración: reservas, productos, servicios, galería y testimonios',
+      'Galería y testimonios administrables desde el panel',
+      'Número de WhatsApp configurable por variable de entorno, no escrito en el código',
+    ],
+    bullets: [
+      'Arquitectura cliente-servidor separada: frontend Next.js y API NestJS en carpetas independientes',
+      'Modelado de la base de datos con Prisma sobre PostgreSQL',
+      'Desarrollo de la API REST con NestJS + TypeScript',
+      'Frontend con Next.js, Tailwind CSS y Framer Motion, sobre una identidad cálida y gastronómica',
+      'Integración del flujo de reserva con WhatsApp, sin chatbot ni intermediarios',
+    ],
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'NestJS', 'Node.js', 'PostgreSQL', 'Prisma'],
+    status: 'in-progress',
+    teamType: 'individual',
+    myRole: 'Arquitectura y frontend',
+    context: 'Hoja de Parra Spitz — catering y parrillas, Perú',
+    realClient: true,
+    repoUrl: 'https://github.com/Elias-CC5/premium-catering-landing',
+    demoUrl: 'https://premium-catering-landing.vercel.app/#inicio',
+    coverImage: '/images/Hojas de parra/img1.png',
+    gallery: [
+      { src: '/images/Hojas de parra/img1.png', label: 'Inicio y presentación principal' },
+      { src: '/images/Hojas de parra/img2.png', label: 'Catálogo de servicios de catering' },
+      { src: '/images/Hojas de parra/img3.png', label: 'Especialidades y paquetes gastronómicos' },
+      { src: '/images/Hojas de parra/img4.png', label: 'Formulario de reservas y cotización' },
+      { src: '/images/Hojas de parra/img5.png', label: 'Integración directa de pedido por WhatsApp' },
+      { src: '/images/Hojas de parra/img6.png', label: 'Galería de eventos reales' },
+      { src: '/images/Hojas de parra/img7.png', label: 'Testimonios y valoraciones de clientes' },
+      { src: '/images/Hojas de parra/img8.png', label: 'Panel de administración — Gestión de reservas' },
+      { src: '/images/Hojas de parra/img9.png', label: 'Panel de administración — Control de catálogo' },
+      { src: '/images/Hojas de parra/img10.png', label: 'Contacto y ubicación' },
     ],
   },
   {
@@ -149,6 +196,7 @@ export const projects: Project[] = [
     context: 'Empresa de café de especialidad — cliente real',
     realClient: true,
     repoUrl: 'https://github.com/FAILO123/Coffee-shop-with-Mercado-Pago',
+    coverImage: '/images/Coffee%20Vibes/Paginaprincipal.png',
     gallery: [
       { src: '/images/Coffee%20Vibes/Paginaprincipal.png', label: 'Página principal' },
       { src: '/images/Coffee%20Vibes/Catálogo.png', label: 'Catálogo' },
@@ -191,6 +239,7 @@ export const projects: Project[] = [
     context: 'Empresa de catering — cliente real · Tesis TECSUP',
     realClient: true,
     repoUrl: 'https://github.com/Jefferson-BA/TesisFrontend',
+    coverImage: '/images/E-COMMERCE/INICIO.png',
     gallery: [
       { src: '/images/E-COMMERCE/INICIO.png', label: 'Inicio' },
       { src: '/images/E-COMMERCE/MENU.png', label: 'Menú' },
@@ -229,6 +278,7 @@ export const projects: Project[] = [
     myRole: 'Diseño de backend',
     context: 'Proyecto en equipo — TECSUP',
     repoUrl: 'https://github.com/FAILO123/apuestas_jwv',
+    coverImage: '/images/Apuestas%20JWV/LOGIN.png',
     gallery: [
       { src: '/images/Apuestas%20JWV/LOGIN.png', label: 'Login' },
       { src: '/images/Apuestas%20JWV/register.png', label: 'Registro' },
@@ -302,7 +352,7 @@ export const certificates: Certificate[] = [
     description: 'Conocimientos fundamentales en seguridad digital...',
     credentialId: 'dcb4ac6b-c369-45cd-b8a0-64aad2e4deb5',
     credentialUrl: '/certificados/certificado-cisco.pdf',
-    logo: '/images/Logo/CISCO.png', // <-- CORREGIDO AQUÍ
+    logo: '/images/Logo/CISCO.png',
     color: '#049FD9'
   },
   {
@@ -314,7 +364,7 @@ export const certificates: Certificate[] = [
     description: 'Gestión de costos y facturación en servicios de AWS.',
     credentialId: '',
     credentialUrl: '/certificados/AWS Billing and Cost Management (Español LATAM).pdf',
-    logo: '/images/Logo/AWS.png', // <-- CORREGIDO AQUÍ
+    logo: '/images/Logo/AWS.png',
     color: '#FF9900'
   },
   {
@@ -326,7 +376,7 @@ export const certificates: Certificate[] = [
     description: 'Fundamentos de inteligencia artificial generativa...',
     credentialId: '',
     credentialUrl: '/certificados/AWS Partner Generative AI.pdf',
-    logo: '/images/Logo/AWS.png', // <-- CORREGIDO AQUÍ
+    logo: '/images/Logo/AWS.png',
     color: '#FF9900'
   },
   {
@@ -338,7 +388,7 @@ export const certificates: Certificate[] = [
     description: 'Principios de POO aplicados al desarrollo de software moderno.',
     credentialId: '',
     credentialUrl: '/certificados/certificado-curso-poo (1).pdf',
-    logo: '/images/Logo/EDTEAM.png', // <-- CORREGIDO AQUÍ
+    logo: '/images/Logo/EDTEAM.png',
     color: '#00BC71'
   },
   {
@@ -350,7 +400,7 @@ export const certificates: Certificate[] = [
     description: 'Fundamentos de machine learning...',
     credentialId: '',
     credentialUrl: '/certificados/Fundamentals of Machine Learning and Artificial Intelligence.pdf',
-    logo: '/images/Logo/AWS.png', // <-- CORREGIDO AQUÍ
+    logo: '/images/Logo/AWS.png',
     color: '#FF9900'
   },
   {
@@ -362,8 +412,9 @@ export const certificates: Certificate[] = [
     description: 'Introducción a los modelos de IA generativa...',
     credentialId: '',
     credentialUrl: '/certificados/Introduction to Generative AI (Español LATAM.pdf',
-    logo: '/images/Logo/AWS.png', // <-- CORREGIDO AQUÍ
+    logo: '/images/Logo/AWS.png',
     color: '#FF9900'
   },
 ];
+
 export const techStackCore: string[] = ['React', 'Astro', 'Node.js', 'NestJS', 'PostgreSQL', 'MySQL', 'MongoDB', 'Git'];
