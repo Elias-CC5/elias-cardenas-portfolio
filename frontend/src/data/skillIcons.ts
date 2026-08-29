@@ -21,6 +21,8 @@ import {
   SiSupabase,
   SiGit,
   SiNextdotjs,
+  SiFramer,
+  SiVercel,
    // Nuevos iconos corregidos:
   SiIntellijidea,
   SiPostman,
@@ -62,6 +64,8 @@ export const skillIconMap: Record<string, IconConfig> = {
   Supabase: { icon: SiSupabase, color: '#3ECF8E' },
   Git: { icon: SiGit, color: '#F05032' },
   'Next.js': { icon: SiNextdotjs, color: '#FFFFFF' },
+  'Framer Motion': { icon: SiFramer, color: '#0055FF' },
+  Vercel: { icon: SiVercel, color: '#FFFFFF' },
   JavaScript: { icon: SiJavascript, color: '#F7DF1E' },
    // Herramientas de desarrollo
   'IntelliJ IDEA': { icon: SiIntellijidea, color: '#fe2857' },
