@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+  import { useRef } from 'react';
   import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
   import { FiArrowRight, FiDownload } from 'react-icons/fi';
   import { profile, stats } from '@/data/portfolio';
@@ -6,14 +6,25 @@ import { useRef, useState, useEffect } from 'react';
   import { duration, ease } from '@/lib/motion';
 
   /**
-   * Portada — retrato a sangre con efecto Typewriter.
+   * Portada — retrato a sangre.
    *
-   * Conserva exactamente la misma retícula y composición visual original:
-   * texto a la izquierda, foto a la derecha con fundido de degradados.
-   * Se añade la simulación de escritura por teclado con control de accesibilidad.
+   * Vuelve a la composición original, que era la que funcionaba: el texto
+   * ocupa la mitad izquierda y la fotografía sangra por el borde derecho de
+   * la ventana, sin marco ni esquinas redondeadas. La foto no está "puesta
+   * en" la página: es la página. Un degradado la funde con el negro por su
+   * lado izquierdo, así que no hay corte duro entre imagen y tipografía.
+   *
+   * Lo que se conserva de las versiones intermedias, porque no era discutible:
+   * - Colores del design system en vez de `zinc-*` escritos a mano. El Hero
+   *   hablaba un idioma visual distinto al del resto del sitio.
+   * - El titular ya no se escribe carácter a carácter. Escribirlo a 35 ms por
+   *   letra tardaba ~1,9 s en mostrar la única frase que hay que leer sí o
+   *   sí, y además retrasaba el LCP. El cursor intermitente se queda: da el
+   *   registro de terminal sin cobrar la espera.
+   * - Entrada por líneas enmascaradas: sólo anima `transform`.
    */
 
-  const FULL_TEXT = 'Construyo APIs, sistemas y UIs que no se caen a las 3 a.m.';
+  const HEADLINE_LINES = ['Construyo APIs,', 'sistemas y UIs que no', 'se caen a las 3 a.m.'];
 
   function riseIn(delay: number, y = 14) {
     return {
@@ -27,38 +38,10 @@ import { useRef, useState, useEffect } from 'react';
     const ref = useRef<HTMLElement>(null);
     const reduced = useReducedMotion();
 
-    // Estado para controlar la animación de tipeo
-    const [displayedText, setDisplayedText] = useState('');
-    const [isTypingDone, setIsTypingDone] = useState(false);
-
     const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
     const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
     const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-5%']);
     const textOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-    // Efecto de máquina de escribir letra por letra
-    useEffect(() => {
-      if (reduced) {
-        setDisplayedText(FULL_TEXT);
-        setIsTypingDone(true);
-        return;
-      }
-
-      let currentIndex = 0;
-      const speed = 35; // Tiempo en ms por carácter
-
-      const interval = setInterval(() => {
-        if (currentIndex <= FULL_TEXT.length) {
-          setDisplayedText(FULL_TEXT.slice(0, currentIndex));
-          currentIndex++;
-        } else {
-          setIsTypingDone(true);
-          clearInterval(interval);
-        }
-      }, speed);
-
-      return () => clearInterval(interval);
-    }, [reduced]);
 
     return (
       <section ref={ref} className="relative min-h-svh w-full overflow-hidden">
@@ -88,25 +71,31 @@ import { useRef, useState, useEffect } from 'react';
               {profile.role}
             </motion.span>
 
-            {/* Titular animado mediante máquina de escribir */}
-            <h1 className="t-h1 mt-5 min-h-[3.6em] max-w-xl text-[var(--color-paper)] sm:min-h-[3em]">
-              <span className="sr-only">{FULL_TEXT}</span>
-              <span aria-hidden="true" className="inline">
-                {displayedText}
-                <motion.span
-                  animate={
-                    reduced
-                      ? undefined
-                      : { opacity: isTypingDone ? [1, 1, 0, 0] : 1 }
-                  }
-                  transition={
-                    isTypingDone
-                      ? { duration: 1.1, repeat: Infinity, ease: 'linear' }
-                      : { duration: 0.1 }
-                  }
-                  className="ml-1 inline-block h-[0.75em] w-[3px] translate-y-[0.04em] bg-[var(--color-paper)] align-baseline"
-                />
-              </span>
+            <h1 className="t-h1 mt-5 max-w-xl text-[var(--color-paper)]">
+              <span className="sr-only">{HEADLINE_LINES.join(' ')}</span>
+              {HEADLINE_LINES.map((text, i) => (
+                <span key={text} aria-hidden="true" className="block overflow-hidden pb-[0.05em]">
+                  <motion.span
+                    className="block"
+                    initial={{ y: '108%' }}
+                    animate={{ y: '0%' }}
+                    transition={{
+                      duration: duration.slow,
+                      delay: 0.18 + i * 0.075,
+                      ease: ease.outExpo,
+                    }}
+                  >
+                    {text}
+                    {i === HEADLINE_LINES.length - 1 && (
+                      <motion.span
+                        animate={reduced ? undefined : { opacity: [1, 1, 0, 0] }}
+                        transition={{ duration: 1.1, repeat: Infinity, ease: 'linear' }}
+                        className="ml-1.5 inline-block h-[0.72em] w-[3px] translate-y-[0.04em] bg-[var(--color-paper)] align-baseline"
+                      />
+                    )}
+                  </motion.span>
+                </span>
+              ))}
             </h1>
 
             {/* Regla corta: el remate discreto que separaba titular y bajada */}
@@ -153,7 +142,8 @@ import { useRef, useState, useEffect } from 'react';
             style={{ y: imageY }}
             className="relative h-[52svh] w-full lg:h-svh"
           >
-            {/* Degradados de fundido */}
+            {/* Degradados de fundido: la foto se funde con el negro por la
+                izquierda en escritorio y por abajo en móvil. */}
             <div
               aria-hidden="true"
               className="absolute inset-y-0 left-0 z-10 hidden w-2/5 bg-gradient-to-r from-[var(--color-ink)] via-[var(--color-ink)]/75 to-transparent lg:block"

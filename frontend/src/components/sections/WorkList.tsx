@@ -2,22 +2,12 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiArrowUpRight } from 'react-icons/fi';
 import type { Project } from '@/types';
-import ProjectCover from './ProjectCover';
 import { getSkillIcon } from '@/data/skillIcons';
 import { fadeUp, viewportOnce } from '@/lib/motion';
+import { MacbookCard } from '@/components/ui/MacbookCard';
 
 /**
  * Presentación editorial del trabajo.
- *
- * Sustituye al índice de sólo texto. Ese índice tenía dos fallos de fondo:
- * el trabajo no se veía (las capturas sólo aparecían al pasar el cursor, y
- * nunca en táctil), y los cinco proyectos pesaban exactamente igual — cinco
- * filas idénticas es el mismo problema que cinco tarjetas idénticas.
- *
- * Acá hay contraste de escala real: el primer proyecto ocupa el ancho
- * completo con su ficha técnica desplegada, y el resto va en filas
- * asimétricas que alternan de lado. La densidad varía, la lectura tiene
- * ritmo, y el espacio horizontal se usa en vez de quedar vacío.
  */
 export default function WorkList({ projects }: { projects: Project[] }) {
   if (projects.length === 0) return null;
@@ -35,25 +25,24 @@ export default function WorkList({ projects }: { projects: Project[] }) {
 }
 
 /* -------------------------------------------------------------------------
-   Proyecto destacado — ancho completo
+   Proyecto destacado — MacBook GIGANTE a Ancho Completo
    ------------------------------------------------------------------------- */
 
 function FeaturedProject({ project, index }: { project: Project; index: number }) {
   return (
     <motion.article initial="hidden" whileInView="visible" viewport={viewportOnce} variants={fadeUp}>
       <Link to={`/proyectos/${project.slug}`} className="group block">
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-ink-2)] sm:aspect-[16/9] lg:aspect-[21/9]">
-          <ProjectCover
-            coverImage={project.coverImage}
-            gallery={project.gallery}
-            title={project.title}
-            tech={project.tech}
-            seed={index}
-            eager
-          />
-          <span className="t-label absolute top-5 left-5 rounded-full border border-[var(--color-border-strong)] bg-[var(--color-ink)]/80 px-3 py-1.5 text-[var(--color-paper-dim)] backdrop-blur-sm">
+        <div className="relative w-full overflow-visible py-2">
+          <span className="t-label absolute top-0 left-2 z-30 rounded-full border border-[var(--color-border-strong)] bg-[var(--color-ink)]/80 px-3 py-1.5 text-[var(--color-paper-dim)] backdrop-blur-sm">
             Destacado
           </span>
+          
+          {/* Tamaño gigante asignado con lg:max-w-6xl */}
+          <MacbookCard
+            src={project.coverImage}
+            alt={project.title}
+            className="max-w-full lg:max-w-6xl"
+          />
         </div>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
@@ -86,7 +75,7 @@ function FeaturedProject({ project, index }: { project: Project; index: number }
 }
 
 /* -------------------------------------------------------------------------
-   Fila asimétrica
+   Fila asimétrica (Proyectos secundarios en tamaño estándar)
    ------------------------------------------------------------------------- */
 
 function ProjectRow({
@@ -104,17 +93,10 @@ function ProjectRow({
         to={`/proyectos/${project.slug}`}
         className="group grid items-center gap-8 lg:grid-cols-12 lg:gap-14"
       >
-        <div
-          className={`relative aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-ink-2)] lg:col-span-7 lg:aspect-[16/10] ${
-            flip ? 'lg:order-2' : ''
-          }`}
-        >
-          <ProjectCover
-            coverImage={project.coverImage}
-            gallery={project.gallery}
-            title={project.title}
-            tech={project.tech}
-            seed={index}
+        <div className={`lg:col-span-7 ${flip ? 'lg:order-2' : ''}`}>
+          <MacbookCard
+            src={project.coverImage}
+            alt={project.title}
           />
         </div>
 
@@ -149,7 +131,7 @@ function ProjectRow({
 }
 
 /* -------------------------------------------------------------------------
-   Ficha técnica — la firma visual del sitio
+   Ficha técnica
    ------------------------------------------------------------------------- */
 
 function SpecSheet({ project }: { project: Project }) {
@@ -179,8 +161,7 @@ function SpecSheet({ project }: { project: Project }) {
 }
 
 /**
- * Stack con los iconos de marca. Es la única fuente de color de la maqueta
- * y no es decorativa: identifica la tecnología más rápido que el texto.
+ * Stack con los iconos de marca.
  */
 function TechRow({ tech, limit = 5 }: { tech: string[]; limit?: number }) {
   return (

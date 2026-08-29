@@ -16,15 +16,13 @@ import {
 import SEO from '@/components/layout/SEO';
 import Reveal, { StaggerGroup, staggerItem } from '@/components/ui/Reveal';
 import Button from '@/components/ui/Button';
-import ProjectCover from '@/components/sections/ProjectCover';
-import ProjectGallery from '@/components/sections/ProjectGallery';
+import { CoverflowCarousel } from '@/components/ui/coverflow-carousel';
 import { getSkillIcon } from '@/data/skillIcons';
 import { projects, profile } from '@/data/portfolio';
 
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
   const project = projects.find((p) => p.slug === slug);
-  const index = projects.findIndex((p) => p.slug === slug);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
@@ -36,11 +34,29 @@ export default function ProjectDetail() {
 
   const otherProjects = projects.filter((p) => p.slug !== slug).slice(0, 2);
 
+  // Mapeo seguro adaptado al tipo de project.gallery
+  const carouselSlides =
+    project.gallery && project.gallery.length > 0
+      ? project.gallery.map((img: any, i: number) => ({
+          src: typeof img === 'string' ? img : img.src || img.url || '',
+          alt: `${project.title} - Captura ${i + 1}`,
+          title: `${project.title} — Vista ${i + 1}`,
+          subtitle: project.context || 'Vista previa del proyecto',
+        }))
+      : [
+          {
+            src: project.coverImage || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&auto=format&fit=crop&q=80',
+            alt: project.title,
+            title: project.title,
+            subtitle: project.context || 'Portada del proyecto',
+          },
+        ];
+
   return (
     <>
       <SEO title={`${project.title} — ${profile.fullName}`} description={project.description} />
 
-      {/* Hero header with ambient glow */}
+      {/* Hero header */}
       <div ref={heroRef} className="relative overflow-hidden pt-32 pb-14 md:pt-40 md:pb-16">
         <motion.div style={{ opacity: headerOpacity }} className="shell shell-narrow relative z-10">
           <Reveal>
@@ -85,20 +101,20 @@ export default function ProjectDetail() {
       </div>
 
       <article className="pb-24">
-        <div className="shell shell-narrow">
-          {/* Cover image / Gallery */}
+        {/* Coverflow Carousel Full Width (Rompe el shell-narrow) */}
+        <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden py-4">
           <Reveal delay={0.1}>
-            <div className="relative">
-              {project.gallery && project.gallery.length > 0 ? (
-                <ProjectGallery images={project.gallery} title={project.title} />
-              ) : (
-                <div className="relative aspect-video w-full overflow-hidden rounded-3xl border border-[var(--color-border)] shadow-2xl shadow-black/40">
-                  <ProjectCover coverImage={project.coverImage} title={project.title} seed={index} />
-                </div>
-              )}
-            </div>
+            <CoverflowCarousel
+              slides={carouselSlides}
+              showCaption={true}
+              showNavigation={true}
+              showPagination={true}
+              cardWidth="clamp(450px, 55vw, 850px)"
+            />
           </Reveal>
+        </div>
 
+        <div className="shell shell-narrow">
           {/* Links */}
           {(project.repoUrl || project.demoUrl) && (
             <Reveal delay={0.18} className="mt-7 flex flex-wrap gap-3">
