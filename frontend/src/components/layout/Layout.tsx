@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import IntroSplash from './IntroSplash';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import { useLenis } from '@/hooks/useLenis';
 import { duration, ease } from '@/lib/motion';
@@ -35,9 +34,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         Saltar al contenido
       </a>
 
-      {/* Pantalla de carga animada (desaparece a los 3s) */}
-      <IntroSplash />
-
+    
       <div className="grain" aria-hidden="true" />
       <ScrollProgress />
       <Navbar />

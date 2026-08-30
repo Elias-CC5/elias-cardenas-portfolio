@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FiArrowRight } from 'react-icons/fi';
 import Hero from '@/components/sections/Hero';
-import WorkList from '@/components/sections/WorkList';
 import ContactCta from '@/components/sections/ContactCta';
 import SectionHeading from '@/components/ui/SectionHeading';
 import SEO from '@/components/layout/SEO';
@@ -42,7 +41,6 @@ export default function Home() {
         />
 
         <div className="mt-14 md:mt-16">
-          <WorkList projects={featured} />
         </div>
       </section>
 
