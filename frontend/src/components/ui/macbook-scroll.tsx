@@ -26,14 +26,27 @@ import {
 
 export const MacbookScroll = ({
   src,
+  screen,
   showGradient,
   title,
   badge,
+  travel = 520,
+  containerClassName = "scale-[0.6] sm:scale-[0.85] md:scale-[1.25] md:pt-16 md:pb-24",
 }: {
   src?: string;
+  /** Contenido interactivo dentro de la pantalla. Reemplaza a `src`. */
+  screen?: React.ReactNode;
   showGradient?: boolean;
   title?: string | React.ReactNode;
   badge?: React.ReactNode;
+  /**
+   * Píxeles que baja la tapa al final del recorrido — el gesto de cerrar.
+   * Con contenido interactivo dentro conviene un valor bajo: si la pantalla
+   * se desliza fuera de la vista, no se puede usar.
+   */
+  travel?: number;
+  /** Escalado y espaciado del conjunto. */
+  containerClassName?: string;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -54,7 +67,7 @@ export const MacbookScroll = ({
   const scaleX = useTransform(scrollYProgress, [0, 0.3], [1.2, isMobile ? 1 : 1.45]);
   const scaleY = useTransform(scrollYProgress, [0, 0.3], [0.6, isMobile ? 1 : 1.45]);
   // Recorrido de cierre. 1500 px empujaba la pantalla fuera de la sección.
-  const translate = useTransform(scrollYProgress, [0, 1], [0, 520]);
+  const translate = useTransform(scrollYProgress, [0, 1], [0, travel]);
   const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.3], [-28, -28, 0]);
   const textTransform = useTransform(scrollYProgress, [0, 0.3], [0, 100]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
@@ -62,7 +75,7 @@ export const MacbookScroll = ({
   return (
     <div
       ref={ref}
-          className="flex min-h-[100vh] shrink-0 origin-top scale-[0.6] transform flex-col items-center justify-start py-0 [perspective:800px] sm:scale-[0.85] md:scale-[1.25] md:pt-16 md:pb-24"
+          className={`flex min-h-[100vh] shrink-0 origin-top transform flex-col items-center justify-start py-0 [perspective:800px] ${containerClassName}`}
     >
       <motion.h2
         style={{
@@ -79,6 +92,7 @@ export const MacbookScroll = ({
       </motion.h2>
       <Lid
         src={src}
+        screen={screen}
         scaleX={scaleX}
         scaleY={scaleY}
         rotate={rotate}
@@ -116,12 +130,14 @@ export const Lid = ({
   rotate,
   translate,
   src,
+  screen,
 }: {
   scaleX: MotionValue<number>;
   scaleY: MotionValue<number>;
   rotate: MotionValue<number>;
   translate: MotionValue<number>;
   src?: string;
+  screen?: React.ReactNode;
 }) => {
   return (
     <div className="relative [perspective:800px]">
@@ -154,11 +170,17 @@ export const Lid = ({
         className="absolute inset-0 h-[20rem] w-[32rem] rounded-2xl bg-[#010101] p-2"
       >
         <div className="absolute inset-0 rounded-lg bg-[#272729]" />
-        <img
-          src={src || "https://assets.aceternity.com/macbook.png"}
-          alt="Macbook Screen Content"
-          className="absolute inset-0 h-full w-full rounded-lg bg-[#010101] object-contain object-center"
-        />
+        {screen ? (
+          <div className="absolute inset-0 overflow-hidden rounded-lg bg-[var(--color-ink)]">
+            {screen}
+          </div>
+        ) : (
+          <img
+            src={src || "https://assets.aceternity.com/macbook.png"}
+            alt="Macbook Screen Content"
+            className="absolute inset-0 h-full w-full rounded-lg bg-[#010101] object-contain object-center"
+          />
+        )}
       </motion.div>
     </div>
   );

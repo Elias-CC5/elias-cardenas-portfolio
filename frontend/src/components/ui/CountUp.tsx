@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useInView, useReducedMotion } from 'framer-motion';
 
 /**
@@ -23,14 +23,26 @@ export default function CountUp({
   const inView = useInView(ref, { once: true, margin: '-10%' });
   const reduced = useReducedMotion();
 
-  const match = value.match(/^(\d+)(.*)$/);
-  const target = match ? Number(match[1]) : 0;
-  const suffix = match ? match[2] : value;
+  /**
+   * `value.match()` devuelve un array NUEVO en cada render. Cuando ese
+   * array iba directo en las dependencias del efecto, el efecto se
+   * reejecutaba en cada render, reiniciaba la cuenta y provocaba otro
+   * render: las cifras giraban sin parar. Ahora las dependencias son
+   * primitivas y estables.
+   */
+  const { target, suffix, isNumeric } = useMemo(() => {
+    const match = /^(\d+)(.*)$/.exec(value);
+    return {
+      target: match ? Number(match[1]) : 0,
+      suffix: match ? match[2] : '',
+      isNumeric: Boolean(match),
+    };
+  }, [value]);
 
-  const [display, setDisplay] = useState(reduced ? target : 0);
+  const [display, setDisplay] = useState(() => (reduced ? target : 0));
 
   useEffect(() => {
-    if (!inView || reduced || !match) return;
+    if (!inView || reduced || !isNumeric) return;
 
     let raf = 0;
     const start = performance.now();
@@ -46,12 +58,12 @@ export default function CountUp({
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [inView, reduced, target, duration, match]);
+  }, [inView, reduced, target, duration, isNumeric]);
 
   return (
     <span ref={ref} className={className}>
-      {match ? display : value}
-      {match ? suffix : ''}
+      {isNumeric ? display : value}
+      {suffix}
     </span>
   );
 }

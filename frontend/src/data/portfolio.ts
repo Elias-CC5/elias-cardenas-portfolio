@@ -38,7 +38,6 @@ export const skills: Skill[] = [
   { name: 'HTML5', category: 'frontend' },
   { name: 'Tailwind CSS', category: 'frontend' },
   { name: 'Bootstrap', category: 'frontend' },
-  { name: 'Vite', category: 'frontend' },
   { name: 'Axios', category: 'frontend' },
   { name: 'C++', category: 'frontend' },
   // Backend
