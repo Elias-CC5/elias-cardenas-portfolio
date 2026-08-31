@@ -1,9 +1,9 @@
 import Hero from '@/components/sections/Hero';
-import ContactCta from '@/components/sections/ContactCta';
 import SEO from '@/components/layout/SEO';
 import { profile, projects } from '@/data/portfolio';
 import { MacbookScroll } from '@/components/ui/macbook-scroll';
 import FloatingTech from '@/components/sections/FloatingTech';
+import TerminalSection from '@/components/sections/TerminalSection';
 
 export default function Home() {
   const featured = projects.slice(0, 3);
@@ -19,6 +19,8 @@ export default function Home() {
       <SEO title={`${profile.fullName} — ${profile.role}`} description={profile.tagline} />
 
       <Hero />
+
+      <TerminalSection />
 
       {/* El componente ya define su propia altura (min-h-[100vh]) y su
           animación depende de recorrerla entera. Envolverlo en una sección
@@ -38,7 +40,6 @@ export default function Home() {
         />
       </section>
 
-      <ContactCta />
     </>
   );
 }

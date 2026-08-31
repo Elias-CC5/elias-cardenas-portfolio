@@ -29,12 +29,6 @@ export const profile: Profile = {
   ],
 };
 
-export const stats: Stat[] = [
-  { value: '5', label: 'Proyectos completados' },
-  { value: '2+', label: 'Años de experiencia' },
-  { value: '5', label: 'Tech stack core' },
-];
-
 export const skills: Skill[] = [
   // Frontend
   { name: 'React', category: 'frontend' },
@@ -424,3 +418,18 @@ export const certificates: Certificate[] = [
 ];
 
 export const techStackCore: string[] = ['React', 'Astro', 'Node.js', 'NestJS', 'PostgreSQL', 'MySQL', 'MongoDB', 'Git'];
+/**
+ * Cifras del Hero, calculadas sobre los datos reales.
+ *
+ * Antes estaban escritas a mano y ya mentían: decía "Tech stack core: 5"
+ * cuando `techStackCore` tiene ocho entradas. Va al final del archivo
+ * porque necesita leer `projects` y `techStackCore`, declarados arriba.
+ */
+export const stats: Stat[] = [
+  {
+    value: String(projects.filter((p) => p.status === 'completed').length),
+    label: 'Proyectos completados',
+  },
+  { value: '2+', label: 'Años de experiencia' },
+  { value: String(techStackCore.length), label: 'Tech stack core' },
+];
