@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
+/* El sitio es oscuro siempre. Sin esto, las variantes `dark:` de Tailwind v4
+   dependen de `prefers-color-scheme`, y cualquier componente de terceros que
+   las use se renderizaría en claro para quien tenga el sistema en claro. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ==========================================================================
    DESIGN SYSTEM — "Ficha técnica"
    Monocromo cálido + un único color señal.

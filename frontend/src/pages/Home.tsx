@@ -1,19 +1,18 @@
-import { Link } from 'react-router-dom';
-import { FiArrowRight } from 'react-icons/fi';
 import Hero from '@/components/sections/Hero';
 import ContactCta from '@/components/sections/ContactCta';
-import SectionHeading from '@/components/ui/SectionHeading';
 import SEO from '@/components/layout/SEO';
 import { profile, projects } from '@/data/portfolio';
+import { MacbookScroll } from '@/components/ui/macbook-scroll';
+import FloatingTech from '@/components/sections/FloatingTech';
 
-/**
- * La versión anterior de la home era únicamente el Hero: el visitante
- * llegaba, leía una frase y tenía que ir a buscar el trabajo a otra página.
- * En un portafolio, el trabajo tiene que estar sobre la primera pantalla de
- * scroll.
- */
 export default function Home() {
   const featured = projects.slice(0, 3);
+
+  // `featured[0].image` no existe en el tipo Project, así que este valor
+  // caía SIEMPRE en la imagen de ejemplo de Aceternity: la home mostraba
+  // la plantilla "Deploy your website in seconds" de otra empresa
+  // presentada como si fuera su proyecto. Ahora usa su captura real.
+  const macbookShot = featured[0]?.coverImage ?? featured[0]?.gallery?.[0]?.src;
 
   return (
     <>
@@ -21,27 +20,22 @@ export default function Home() {
 
       <Hero />
 
-      <section className="shell section">
-        <SectionHeading
-          index="01"
-          eyebrow="Trabajo seleccionado"
-          title="Proyectos que llegaron a producción"
-          action={
-            <Link
-              to="/proyectos"
-              className="group inline-flex items-center gap-2 text-sm text-[var(--color-paper-dim)] transition-colors hover:text-[var(--color-paper)]"
-            >
-              <span className="link-underline">Ver los {projects.length}</span>
-              <FiArrowRight
-                aria-hidden="true"
-                className="transition-transform duration-[var(--duration-quick)] ease-[var(--ease-out-quart)] group-hover:translate-x-0.5"
-              />
-            </Link>
+      {/* El componente ya define su propia altura (min-h-[100vh]) y su
+          animación depende de recorrerla entera. Envolverlo en una sección
+          con altura fija, `flex items-center` y `overflow-hidden` rompía el
+          cálculo del scroll y recortaba la tapa. Acá sólo se le da aire. */}
+      <section className="relative z-20 w-full pb-24 md:pb-40">
+        <FloatingTech />
+        <MacbookScroll
+          title={
+            <span className="t-h2 block text-[var(--color-paper)]">
+              {featured[0]?.title.split('—')[0].trim()}
+              <span className="block text-[var(--color-muted)]">en acción</span>
+            </span>
           }
+          src={macbookShot}
+          showGradient={false}
         />
-
-        <div className="mt-14 md:mt-16">
-        </div>
       </section>
 
       <ContactCta />

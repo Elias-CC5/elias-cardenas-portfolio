@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
 import { cn } from "@/lib/utils";
 
 interface MacbookCardProps {
-  src: string;
+  /** Opcional: no todos los proyectos tienen captura todavía. */
+  src?: string;
   alt: string;
   className?: string;
 }
@@ -24,11 +24,21 @@ export function MacbookCard({ src, alt, className }: MacbookCardProps) {
 
           {/* Área de la Captura de Pantalla - object-contain asegura 0 recortes */}
           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[0.6rem] sm:rounded-[0.8rem] bg-black flex items-center justify-center">
-            <img
-              src={src}
-              alt={alt}
-              className="h-full w-full object-contain object-center transition-transform duration-500 group-hover:scale-[1.01]"
-            />
+            {src ? (
+              <img
+                src={src}
+                alt={alt}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-contain object-center transition-transform duration-500 group-hover:scale-[1.01]"
+              />
+            ) : (
+              /* Sin captura: panel tipográfico deliberado en lugar de una
+                 imagen rota o un hueco negro. */
+              <div className="flex h-full w-full items-center justify-center px-8">
+                <p className="t-label text-center text-[var(--color-muted)]">{alt}</p>
+              </div>
+            )}
           </div>
         </div>
 

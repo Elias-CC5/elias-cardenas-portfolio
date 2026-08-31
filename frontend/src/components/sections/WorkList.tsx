@@ -39,7 +39,7 @@ function FeaturedProject({ project, index }: { project: Project; index: number }
           
           {/* Tamaño gigante asignado con lg:max-w-6xl */}
           <MacbookCard
-            src={project.coverImage}
+            src={project.coverImage ?? project.gallery?.[0]?.src}
             alt={project.title}
             className="max-w-full lg:max-w-6xl"
           />
@@ -95,7 +95,7 @@ function ProjectRow({
       >
         <div className={`lg:col-span-7 ${flip ? 'lg:order-2' : ''}`}>
           <MacbookCard
-            src={project.coverImage}
+            src={project.coverImage ?? project.gallery?.[0]?.src}
             alt={project.title}
           />
         </div>

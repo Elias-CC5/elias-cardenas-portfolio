@@ -108,7 +108,6 @@ export default function ProjectDetail() {
               slides={carouselSlides}
               showCaption={true}
               showNavigation={true}
-              showPagination={true}
               cardWidth="clamp(450px, 55vw, 850px)"
             />
           </Reveal>
