@@ -1,56 +1,62 @@
+import type { CSSProperties } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { getSkillIcon } from '@/data/skillIcons';
+import { ease } from '@/lib/motion';
 
 /**
  * Iconos de tecnologías flotando alrededor del Macbook.
  *
- * Van sólo en las calles laterales — la laptop ocupa la banda central — y
- * cada uno respira con su propio periodo y desfase, así el conjunto nunca
- * late al unísono, que es lo que delata una animación automática.
+ * Tres cosas los sacan del registro de "stickers pegados":
  *
- * Son decorativos: llevan `aria-hidden`, porque el stack ya está escrito en
- * la portada y en /habilidades. Sólo se anima `transform`.
+ * 1. Profundidad de campo real. El plano de atrás va más chico, más
+ *    apagado y LEVEMENTE DESENFOCADO. Es lo que hace que el conjunto se
+ *    lea como espacio y no como una fila de recuadros.
+ * 2. Cada uno lleva un halo en su color de marca detrás del cristal, así
+ *    el color se percibe aunque el icono sea pequeño.
+ * 3. Derivan en dos ejes y rotan un poco, cada uno con su propio periodo
+ *    y desfase. Si todos subieran y bajaran igual se nota al instante que
+ *    es automático.
+ *
+ * Son decorativos (`aria-hidden`): el stack está escrito en la portada y
+ * en /habilidades. Sólo se anima `transform`.
  */
 
 type Spot = {
   name: string;
-  /** Posición en porcentaje dentro de la sección. */
   top: string;
   left?: string;
   right?: string;
-  /** Tamaño relativo: los del fondo van más chicos y más apagados. */
+  /** 0 = primer plano, nítido · 1 = fondo, desenfocado */
   depth: 0 | 1;
 };
 
 const SPOTS: Spot[] = [
   // Calle izquierda
-  { name: 'React', top: '10%', left: '7%', depth: 0 },
+  { name: 'React', top: '9%', left: '7%', depth: 0 },
   { name: 'TypeScript', top: '17%', left: '16%', depth: 1 },
-  { name: 'Node.js', top: '25%', left: '3%', depth: 0 },
-  { name: 'Tailwind CSS', top: '32%', left: '13%', depth: 1 },
-  { name: 'PostgreSQL', top: '40%', left: '6%', depth: 0 },
-  { name: 'Prisma', top: '47%', left: '16%', depth: 1 },
-  { name: 'Vite', top: '55%', left: '2%', depth: 1 },
-  { name: 'Git', top: '62%', left: '12%', depth: 0 },
-  { name: 'JavaScript (ES6+)', top: '70%', left: '5%', depth: 1 },
-  { name: 'Astro', top: '77%', left: '15%', depth: 0 },
-  { name: 'Bootstrap', top: '85%', left: '4%', depth: 1 },
-  { name: 'Python', top: '92%', left: '11%', depth: 1 },
-  { name: 'HTML5', top: '4%', left: '13%', depth: 1 },
+  { name: 'Next.js', top: '25%', left: '3%', depth: 0 },
+  { name: 'Tailwind CSS', top: '33%', left: '14%', depth: 1 },
+  { name: 'Node.js', top: '41%', left: '6%', depth: 0 },
+  { name: 'Prisma', top: '49%', left: '16%', depth: 1 },
+  { name: 'PostgreSQL', top: '57%', left: '2%', depth: 0 },
+  { name: 'Docker', top: '65%', left: '13%', depth: 1 },
+  { name: 'Framer Motion', top: '73%', left: '5%', depth: 1 },
+  { name: 'Vite', top: '81%', left: '15%', depth: 0 },
+  { name: 'Git', top: '89%', left: '6%', depth: 1 },
+  { name: 'Zustand', top: '3%', left: '14%', depth: 1 },
   // Calle derecha
-  { name: 'Next.js', top: '9%', right: '8%', depth: 1 },
-  { name: 'NestJS', top: '16%', right: '16%', depth: 0 },
-  { name: 'Express.js', top: '24%', right: '3%', depth: 1 },
-  { name: 'MongoDB', top: '31%', right: '14%', depth: 0 },
-  { name: 'MySQL', top: '39%', right: '5%', depth: 1 },
-  { name: 'Supabase', top: '46%', right: '16%', depth: 0 },
-  { name: 'GitHub', top: '54%', right: '2%', depth: 1 },
-  { name: 'Postman', top: '61%', right: '13%', depth: 0 },
-  { name: 'Firebase', top: '69%', right: '6%', depth: 1 },
-  { name: 'PHP', top: '76%', right: '15%', depth: 0 },
-  { name: 'SQL Server', top: '84%', right: '4%', depth: 1 },
-  { name: 'npm', top: '91%', right: '12%', depth: 1 },
-  { name: 'C++', top: '3%', right: '14%', depth: 1 },
+  { name: 'NestJS', top: '8%', right: '8%', depth: 0 },
+  { name: 'Express.js', top: '16%', right: '16%', depth: 1 },
+  { name: 'JWT', top: '24%', right: '3%', depth: 0 },
+  { name: 'MongoDB', top: '32%', right: '14%', depth: 1 },
+  { name: 'Redis', top: '40%', right: '5%', depth: 0 },
+  { name: 'Neon', top: '48%', right: '16%', depth: 1 },
+  { name: 'Vercel', top: '56%', right: '2%', depth: 0 },
+  { name: 'Render', top: '64%', right: '13%', depth: 1 },
+  { name: 'Swagger', top: '72%', right: '5%', depth: 1 },
+  { name: 'VS Code', top: '80%', right: '15%', depth: 0 },
+  { name: 'MySQL', top: '88%', right: '7%', depth: 1 },
+  { name: 'Cloudinary', top: '2%', right: '15%', depth: 1 },
 ];
 
 export default function FloatingTech() {
@@ -60,29 +66,59 @@ export default function FloatingTech() {
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
       {SPOTS.map((spot, i) => {
         const { icon: Icon, color } = getSkillIcon(spot.name);
-        const size = spot.depth === 0 ? 26 : 20;
+        const front = spot.depth === 0;
+        const size = front ? 56 : 44;
+        const drift = front ? 14 : 9;
 
         return (
           <motion.span
             key={spot.name}
-            style={{ top: spot.top, left: spot.left, right: spot.right }}
-            className="absolute flex items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-ink-2)]/70 p-3 backdrop-blur-sm"
-            initial={{ opacity: 0, scale: 0.85 }}
-            whileInView={{ opacity: spot.depth === 0 ? 0.95 : 0.45, scale: 1 }}
+            style={
+              {
+                top: spot.top,
+                left: spot.left,
+                right: spot.right,
+                width: size,
+                height: size,
+                '--brand': color,
+                filter: front ? undefined : 'blur(0.7px)',
+              } as CSSProperties
+            }
+            className="absolute block"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: front ? 1 : 0.5, scale: 1 }}
             viewport={{ once: true, margin: '-10%' }}
-            transition={{ duration: 0.6, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.55, delay: i * 0.035, ease: ease.outExpo }}
           >
             <motion.span
-              animate={reduced ? undefined : { y: [0, spot.depth === 0 ? -12 : -8, 0] }}
+              animate={
+                reduced
+                  ? undefined
+                  : {
+                      y: [0, -drift, 0, drift * 0.6, 0],
+                      x: [0, drift * 0.4, 0, -drift * 0.3, 0],
+                      rotate: [0, front ? 4 : -3, 0, front ? -3 : 2, 0],
+                    }
+              }
               transition={{
-                duration: 5 + i * 0.55,
+                duration: 11 + i * 0.7,
                 repeat: Infinity,
                 ease: 'easeInOut',
-                delay: i * 0.35,
+                delay: i * 0.28,
               }}
-              className="flex"
+              className="relative flex h-full w-full items-center justify-center"
             >
-              <Icon size={size} style={{ color }} />
+              {/* Halo de marca detrás del cristal */}
+              <span
+                className="absolute inset-0 rounded-[1rem] opacity-25 blur-lg"
+                style={{ backgroundColor: color }}
+              />
+
+              <span className="relative flex h-full w-full items-center justify-center rounded-[1rem] border border-[color-mix(in_srgb,var(--brand)_28%,var(--color-border))] bg-[var(--color-ink-2)]/75 backdrop-blur-md">
+                {/* Reflejo superior: da volumen de cristal sin sombras */}
+                <span className="pointer-events-none absolute inset-x-2 top-px h-px rounded-full bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+                <Icon size={front ? 24 : 19} style={{ color }} />
+              </span>
             </motion.span>
           </motion.span>
         );

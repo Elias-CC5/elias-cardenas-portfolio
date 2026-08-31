@@ -30,8 +30,23 @@ import {
   SiNpm,
   SiFirebase,
   SiXcode,
+  SiPrisma,
+  SiDocker,
+  SiRedis,
+  SiSwagger,
+  SiZod,
+  SiJsonwebtokens,
+  SiCloudinary,
+  SiRender,
+  SiGreensock,
+  SiTypeorm,
+  SiMercadopago,
+  SiFigma,
+  SiEslint,
+  SiCss,
 } from 'react-icons/si';
-import { FiDatabase } from 'react-icons/fi';
+import { FiDatabase, FiPackage, FiZap, FiFeather } from 'react-icons/fi';
+import { VscVscode } from 'react-icons/vsc';
 
 import { DiAndroid } from 'react-icons/di'; 
 import { FaServer } from 'react-icons/fa';   
@@ -75,9 +90,46 @@ export const skillIconMap: Record<string, IconConfig> = {
   GitHub: { icon: SiGithub, color: '#FFFFFF' },
   XAMPP: { icon: FaServer, color: '#FB3E04' },
   npm: { icon: SiNpm, color: '#CB3837' },
-  Firebase: { icon: SiFirebase, color: '#FFCA28' }
+  Firebase: { icon: SiFirebase, color: '#FFCA28' },
+
+  // Backend y datos
+  Prisma: { icon: SiPrisma, color: '#5A67D8' },
+  TypeORM: { icon: SiTypeorm, color: '#FE0803' },
+  Redis: { icon: SiRedis, color: '#FF4438' },
+  Swagger: { icon: SiSwagger, color: '#85EA2D' },
+  Zod: { icon: SiZod, color: '#3E67B1' },
+  JWT: { icon: SiJsonwebtokens, color: '#D63AFF' },
+  'JWT (JSON Web Token)': { icon: SiJsonwebtokens, color: '#D63AFF' },
+  // Neon no tiene icono propio en react-icons: se usa el genérico de base
+  // de datos con su verde de marca, en lugar de inventar otro logo.
+  Neon: { icon: FiDatabase, color: '#00E599' },
+
+  // Infraestructura y despliegue
+  Docker: { icon: SiDocker, color: '#2496ED' },
+  docker: { icon: SiDocker, color: '#2496ED' },
+  Render: { icon: SiRender, color: '#46E3B7' },
+  Cloudinary: { icon: SiCloudinary, color: '#3448C5' },
+
+  // Frontend y movimiento
+  Motion: { icon: SiFramer, color: '#0055FF' },
+  GSAP: { icon: SiGreensock, color: '#88CE02' },
+  Lenis: { icon: FiFeather, color: '#B8B8C0' },
+  Zustand: { icon: FiPackage, color: '#C4802A' },
+  CSS: { icon: SiCss, color: '#663399' },
+  CSS3: { icon: SiCss, color: '#663399' },
+
+  // Herramientas
+  'VS Code': { icon: VscVscode, color: '#0098FF' },
+  'Visual Studio Code': { icon: VscVscode, color: '#0098FF' },
+  ESLint: { icon: SiEslint, color: '#4B32C3' },
+  Figma: { icon: SiFigma, color: '#F24E1E' },
+
+  // Pagos
+  'Mercado Pago': { icon: SiMercadopago, color: '#00B1EA' },
+  Culqi: { icon: FiZap, color: '#00A19B' },
+  'OpenRouter (SDK de OpenAI)': { icon: FiZap, color: '#8B8BF5' }
 };
 
 export function getSkillIcon(name: string): IconConfig {
-  return skillIconMap[name] ?? { icon: FiDatabase, color: '#71717A' };
+  return skillIconMap[name] ?? { icon: FiPackage, color: '#71717A' };
 }

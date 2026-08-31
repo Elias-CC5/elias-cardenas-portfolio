@@ -40,18 +40,30 @@ export const skills: Skill[] = [
   { name: 'Bootstrap', category: 'frontend' },
   { name: 'Axios', category: 'frontend' },
   { name: 'C++', category: 'frontend' },
+  { name: 'Next.js', category: 'frontend' },
+  { name: 'Framer Motion', category: 'frontend' },
+  { name: 'Zustand', category: 'frontend' },
+  { name: 'Lenis', category: 'frontend' },
+  { name: 'CSS', category: 'frontend' },
   // Backend
   { name: 'Node.js', category: 'backend' },
   { name: 'NestJS', category: 'backend' },
   { name: 'Express.js', category: 'backend' },
   { name: 'Python', category: 'backend' },
   { name: 'PHP', category: 'backend' },
+  { name: 'Prisma', category: 'backend' },
+  { name: 'TypeORM', category: 'backend' },
+  { name: 'JWT', category: 'backend' },
+  { name: 'Zod', category: 'backend' },
+  { name: 'Swagger', category: 'backend' },
   // Database
   { name: 'PostgreSQL', category: 'database' },
   { name: 'MySQL', category: 'database' },
   { name: 'MongoDB', category: 'database' },
   { name: 'SQL Server', category: 'database' },
   { name: 'Supabase', category: 'database' },
+  { name: 'Neon', category: 'database' },
+  { name: 'Redis', category: 'database' },
   // Tools
   { name: 'GitHub', category: 'tools' },
   { name: 'Postman', category: 'tools' },
@@ -61,6 +73,12 @@ export const skills: Skill[] = [
   { name: 'IntelliJ IDEA', category: 'tools' },
   { name: 'Android Studio', category: 'tools' },
   { name: 'XAMPP', category: 'tools' },
+  { name: 'Docker', category: 'tools' },
+  { name: 'Vercel', category: 'tools' },
+  { name: 'Render', category: 'tools' },
+  { name: 'VS Code', category: 'tools' },
+  { name: 'Cloudinary', category: 'tools' },
+  { name: 'Mercado Pago', category: 'tools' },
 ];
 
 export const projects: Project[] = [
@@ -416,7 +434,21 @@ export const certificates: Certificate[] = [
   },
 ];
 
-export const techStackCore: string[] = ['React', 'Astro', 'Node.js', 'NestJS', 'PostgreSQL', 'MySQL', 'MongoDB', 'Git'];
+/** Stack favorito — el que Elías elige cuando puede elegir. */
+export const techStackCore: string[] = [
+  'React',
+  'Next.js',
+  'TypeScript',
+  'Tailwind CSS',
+  'Node.js',
+  'NestJS',
+  'PostgreSQL',
+  'Neon',
+  'npm',
+  'VS Code',
+  'Render',
+  'Vercel',
+];
 /**
  * Cifras del Hero, calculadas sobre los datos reales.
  *
