@@ -1,294 +1,354 @@
-import { useRef, useCallback, type MouseEvent } from 'react';
-import PageHeader from '@/components/ui/PageHeader';
-import Reveal, { StaggerGroup, staggerItem } from '@/components/ui/Reveal';
-import TiltPanel from '@/components/ui/TiltPanel';
+import type { ReactNode } from 'react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { FiArrowRight, FiArrowUpRight, FiDownload, FiMail } from 'react-icons/fi';
 import SEO from '@/components/layout/SEO';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { profile, stats, education, certificates, techStackCore } from '@/data/portfolio';
+import Button from '@/components/ui/Button';
+import ScrollStack from '@/components/ui/ScrollStack';
+import Photo3D from '@/components/ui/Photo3D';
+import CertificateRail from '@/components/sections/CertificateRail';
+import { profile, projects, education, certificates, techStackCore } from '@/data/portfolio';
 import { getSkillIcon } from '@/data/skillIcons';
-import { FiCalendar, FiTarget, FiShield, FiLayers, FiAward, FiDownload } from 'react-icons/fi';
+import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
 
-const PRINCIPLES = [
+/**
+ * Sobre mí.
+ *
+ * Cinco paneles apilados por scroll (`ScrollStack`): cada uno se fija y el
+ * siguiente se le monta encima. Toda la página habla de una sola persona —
+ * no hay grilla de proyectos ni capturas: para eso están /proyectos y
+ * /habilidades.
+ *
+ *   1. Quién soy    — retrato, nombre, dos párrafos en primera persona.
+ *   2. Qué hago     — tres cosas concretas, con la segunda foto al lado.
+ *   3. Herramientas — el stack favorito, con el color real de cada marca.
+ *   4. Certificados — tarjetas cuadradas con el logo grande.
+ *   5. Formación y contacto.
+ *
+ * Cada panel está pensado para caber en una pantalla, que es la condición
+ * para que el apilado funcione: lo que sobresale de un `sticky` queda por
+ * debajo del pliegue sin forma de llegar. Por eso los certificados van en
+ * una fila que se arrastra y no en dos filas de grilla, y por eso las fotos
+ * tienen un ancho máximo en lugar de ocupar toda su columna.
+ *
+ * El stack sale de `techStackCore`, los certificados de `certificates` y las
+ * cifras se calculan sobre `projects`.
+ */
+
+const QUE_HAGO = [
   {
-    icon: FiTarget,
-    title: 'Orientado a problemas reales',
-    text: 'No escribo código por escribirlo. Cada decisión técnica responde a un problema concreto que hay que resolver.',
+    n: '01',
+    title: 'APIs que aguantan',
+    body: 'Modelo de datos, autenticación con JWT, roles y permisos. NestJS o Node sobre PostgreSQL, con las validaciones puestas antes de que lleguen los datos raros.',
   },
   {
-    icon: FiShield,
-    title: 'Seguridad desde el diseño',
-    text: 'Autenticación, control de acceso y validaciones no son un parche al final — son parte del plano desde el primer commit.',
+    n: '02',
+    title: 'Interfaces que se entienden',
+    body: 'React y TypeScript. Me importa más que un formulario diga por qué falló a que tenga una animación de más.',
   },
   {
-    icon: FiLayers,
-    title: 'Arquitectura que escala',
-    text: 'Construyo pensando en quién va a mantener este código en seis meses — probablemente yo mismo.',
+    n: '03',
+    title: 'Y lo pongo en producción',
+    body: 'Render, Vercel, Neon. Un proyecto no está terminado hasta que alguien que no soy yo lo puede usar desde su teléfono.',
   },
 ];
 
-function Photo3D({ src, alt }: { src: string; alt: string }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  const handleMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
-    const el = cardRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width;
-    const py = (e.clientY - rect.top) / rect.height;
-    const rx = (py - 0.5) * -10;
-    const ry = (px - 0.5) * 10;
-    el.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) scale(1.03)`;
-  }, []);
-
-  const handleLeave = useCallback(() => {
-    const el = cardRef.current;
-    if (!el) return;
-    el.style.transition = 'transform 0.55s cubic-bezier(0.23,1,0.32,1)';
-    el.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-  }, []);
-
-  const handleEnter = useCallback(() => {
-    const el = cardRef.current;
-    if (!el) return;
-    el.style.transition = 'transform 0.1s ease-out';
-  }, []);
-
+/**
+ * Etiqueta de sección. Toma el color de primer plano del panel, así que se
+ * lee negra sobre los paneles blancos y clara sobre los negros sin que el
+ * marcado cambie.
+ */
+function Eyebrow({ children }: { children: ReactNode }) {
   return (
-    <div style={{ perspective: '900px' }}>
-      <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-gradient-to-br from-[var(--color-accent)]/25 via-[var(--color-accent)]/10 to-transparent blur-3xl" />
-      <span className="absolute -top-3 -left-3 z-20 h-7 w-7 rounded-tl-2xl border-t-2 border-l-2 border-[var(--color-accent-bright)]/70" />
-      <span className="absolute -right-3 -bottom-3 z-20 h-7 w-7 rounded-br-2xl border-r-2 border-b-2 border-[var(--color-accent-bright)]/70" />
+    <span className="inline-flex items-center gap-2.5">
+      <span aria-hidden="true" className="size-1.5 rounded-full bg-[var(--fg)]" />
+      <span className="t-label text-[var(--fg)]">{children}</span>
+    </span>
+  );
+}
 
-      <div
-        ref={cardRef}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-        onMouseEnter={handleEnter}
-        className="relative aspect-[4/5] w-full cursor-default overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl shadow-black/50"
-        style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
-      >
-        <img src={src} alt={alt} className="h-full w-full object-cover" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/70 to-transparent" />
-        <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md">
-          <span className="relative flex h-2.5 w-2.5 shrink-0">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
-          </span>
-          <div>
-            <p className="text-sm font-medium leading-none text-white">Disponible para proyectos</p>
-            <p className="mt-1 font-mono text-[10px] text-white/60">Remoto · Full-time / freelance</p>
-          </div>
-        </div>
-      </div>
+/** Caja interna de cada panel. Fija el alto útil y el aire. */
+function PanelBody({ children }: { children: ReactNode }) {
+  return (
+    <div className="shell flex min-h-[calc(100vh-11rem)] flex-col justify-center py-16 md:py-20">
+      {children}
     </div>
   );
 }
 
 export default function About() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const photoY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+  const completed = projects.filter((p) => p.status === 'completed').length;
+  const realClients = projects.filter((p) => p.realClient).length;
+  const school = education[0];
 
   return (
     <>
-      <SEO title={`Sobre mí — ${profile.fullName}`} description={profile.about} />
+      <SEO title={`Sobre mí — ${profile.fullName}`} description={profile.shortAbout} />
 
-      <div ref={heroRef} className="relative overflow-hidden pt-32 pb-24 md:pt-40">
-        
+      <div className="pt-24 pb-32 md:pt-28 md:pb-40">
+        <ScrollStack>
+          {/* ── 1. Quién soy ─────────────────────────────────────── */}
+          <PanelBody>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer(0.08)}
+              className="grid items-center gap-10 md:grid-cols-12 md:gap-14"
+            >
+              <motion.div variants={fadeUp} className="order-1 md:order-2 md:col-span-5">
+                <Photo3D
+                  src="/images/retrato.jpg"
+                  alt={profile.fullName}
+                  width={900}
+                  height={1199}
+                  badge={profile.location}
+                  priority
+                  className="mx-auto w-full max-w-[24rem]"
+                />
+              </motion.div>
 
-        <div className="shell relative z-10">
-          <PageHeader eyebrow="Quién soy" title="Sobre mí" noPadding />
+              <div className="order-2 md:order-1 md:col-span-7">
+                <motion.div variants={fadeUp}>
+                  <Eyebrow>Sobre mí</Eyebrow>
+                </motion.div>
 
-          <div className="mt-12 grid gap-16 lg:grid-cols-[1fr_1.3fr]">
+                <motion.h1 variants={fadeUp} className="t-display mt-6 text-[var(--fg)]">
+                  Elías
+                  <span className="block text-[var(--fg-mute)]">Cárdenas.</span>
+                </motion.h1>
 
-            {/* COLUMNA IZQUIERDA */}
-            <div className="space-y-12">
-              <div>
-                <Reveal>
-                  <motion.div style={{ y: photoY }} className="relative">
-                    <Photo3D src="/images/elias-profile.jpg" alt={profile.fullName} />
-                  </motion.div>
-                </Reveal>
+                <motion.p
+                  variants={fadeUp}
+                  className="t-lead mt-8 max-w-xl text-[var(--fg-dim)]"
+                >
+                  Tengo {completed} proyectos terminados y {realClients} de ellos están corriendo
+                  para empresas reales: un portal de alquileres, la web de una cafetería, la de
+                  un catering. Estudio Diseño y Desarrollo de Software en TECSUP
+                  {school?.period ? ` (${school.period})` : ''} y programo desde antes de entrar.
+                </motion.p>
 
-                <StaggerGroup className="mt-6 grid grid-cols-3 gap-3">
-                  {stats.map((stat) => (
-                    <motion.div key={stat.label} variants={staggerItem}>
-                      <TiltPanel className="p-4 text-center">
-                        <p className="font-display text-2xl font-bold text-[var(--color-paper)]">{stat.value}</p>
-                        <p className="mt-1 text-[11px] leading-tight text-[var(--color-muted)]">{stat.label}</p>
-                      </TiltPanel>
-                    </motion.div>
+                <motion.p
+                  variants={fadeUp}
+                  className="t-body mt-5 max-w-xl text-[var(--fg-mute)]"
+                >
+                  Trabajo de atrás hacia adelante. Primero el modelo de datos, la autenticación
+                  y los permisos, y recién cuando eso aguanta, la interfaz. No es una preferencia
+                  estética: una UI bonita sobre un backend flojo se cae sola a los dos meses.
+                </motion.p>
+
+                <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-3">
+                  <Button to="/contacto" variant="primary">
+                    Hablemos
+                    <FiArrowRight
+                      aria-hidden="true"
+                      className="transition-transform duration-[var(--duration-quick)] ease-[var(--ease-out-quart)] group-hover:translate-x-0.5"
+                    />
+                  </Button>
+                  <Button href="/cv-elias-cardenas.pdf" download external variant="secondary">
+                    Descargar CV <FiDownload aria-hidden="true" />
+                  </Button>
+                </motion.div>
+              </div>
+            </motion.div>
+          </PanelBody>
+
+          {/* ── 2. Qué hago ──────────────────────────────────────── */}
+          <PanelBody>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
+              variants={staggerContainer(0.07)}
+              className="grid items-center gap-10 md:grid-cols-12 md:gap-14"
+            >
+              <motion.div variants={fadeUp} className="md:col-span-5">
+                <Photo3D
+                  src="/images/retrato-calle-2.jpg"
+                  alt={`${profile.firstName} en Lima`}
+                  width={880}
+                  height={1100}
+                  badge="Lima, 2026"
+                  className="mx-auto w-full max-w-[22rem]"
+                />
+              </motion.div>
+
+              <div className="md:col-span-7">
+                <motion.div variants={fadeUp}>
+                  <Eyebrow>Qué hago</Eyebrow>
+                </motion.div>
+
+                <motion.h2
+                  variants={fadeUp}
+                  className="t-h2 mt-4 max-w-lg text-[var(--fg)]"
+                >
+                  Tres cosas, en este orden.
+                </motion.h2>
+
+                <ul className="mt-8 border-t border-[var(--line)]">
+                  {QUE_HAGO.map((item) => (
+                    <motion.li
+                      key={item.n}
+                      variants={fadeUp}
+                      className="grid grid-cols-[auto_1fr] gap-5 border-b border-[var(--line)] py-5 sm:gap-8"
+                    >
+                      <span className="t-label pt-1 text-[var(--fg-mute)] tabular-nums">
+                        {item.n}
+                      </span>
+                      <div>
+                        <h3 className="t-h3 text-[var(--fg)]">{item.title}</h3>
+                        <p className="t-body mt-2 max-w-lg text-[var(--fg-mute)]">
+                          {item.body}
+                        </p>
+                      </div>
+                    </motion.li>
                   ))}
-                </StaggerGroup>
+                </ul>
               </div>
+            </motion.div>
+          </PanelBody>
 
-              <div>
-                <Reveal delay={0.42}>
-                  <h2 className="font-display text-2xl font-semibold text-[var(--color-paper)] md:text-3xl">Stack favorito</h2>
-                </Reveal>
-                <StaggerGroup className="mt-5 flex flex-wrap gap-2.5" staggerDelay={0.05}>
-                  {techStackCore.map((tech) => {
-                    const { icon: Icon, color } = getSkillIcon(tech);
-                    return (
-                      <motion.div
-                        key={tech}
-                        variants={staggerItem}
-                        whileHover={{ y: -3, borderColor: 'var(--color-accent-bright)' }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                        className="flex cursor-default items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 font-mono text-sm text-[var(--color-paper-dim)] transition-colors"
-                      >
-                        <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: color }} />
-                        <Icon size={14} style={{ color }} />
-                        {tech}
-                      </motion.div>
-                    );
-                  })}
-                </StaggerGroup>
-              </div>
-            </div>
+          {/* ── 3. Herramientas ──────────────────────────────────── */}
+          <PanelBody>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
+              variants={staggerContainer(0.05)}
+            >
+              <motion.div variants={fadeUp} className="flex items-end justify-between gap-6">
+                <div>
+                  <Eyebrow>Mis herramientas</Eyebrow>
+                  <h2 className="t-h2 mt-4 max-w-xl text-[var(--fg)]">
+                    El stack que elijo cuando puedo elegir.
+                  </h2>
+                </div>
+                <span className="t-num hidden shrink-0 text-[var(--fg-mute)] md:block">
+                  {String(techStackCore.length).padStart(2, '0')}
+                </span>
+              </motion.div>
 
-            {/* COLUMNA DERECHA */}
-            <div>
-              <Reveal>
-                <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-accent-bright)]">Mi historia</p>
-                <h2 className="mt-3 font-display text-2xl font-semibold text-[var(--color-paper)] md:text-3xl">
-                  De la curiosidad a la arquitectura
-                </h2>
-              </Reveal>
-              <Reveal delay={0.1}>
-                <p className="mt-5 text-base leading-[1.85] text-[var(--color-paper-dim)] md:text-lg">{profile.about}</p>
-              </Reveal>
-
-              <Reveal delay={0.18} className="mt-12">
-                <h2 className="font-display text-2xl font-semibold text-[var(--color-paper)] md:text-3xl">Cómo trabajo</h2>
-              </Reveal>
-              <StaggerGroup className="mt-5 space-y-3" staggerDelay={0.07}>
-                {PRINCIPLES.map((p) => {
-                  const Icon = p.icon;
+              <motion.ul
+                variants={staggerContainer(0.035)}
+                className="mt-10 grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--line)] sm:grid-cols-4 lg:grid-cols-6"
+              >
+                {techStackCore.map((name) => {
+                  const { icon: Icon, color } = getSkillIcon(name);
                   return (
-                    <motion.div key={p.title} variants={staggerItem}>
-                      <TiltPanel className="flex items-start gap-4 p-5">
-                        <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-accent)]/15 text-[var(--color-accent-bright)]">
-                          <Icon size={17} />
-                        </div>
-                        <div>
-                          <p className="font-display font-semibold text-[var(--color-paper)]">{p.title}</p>
-                          <p className="mt-1 text-sm leading-relaxed text-[var(--color-paper-dim)]">{p.text}</p>
-                        </div>
-                      </TiltPanel>
-                    </motion.div>
+                    <motion.li
+                      key={name}
+                      variants={fadeUp}
+                      style={{ ['--brand' as string]: color }}
+                      className="group flex flex-col items-center justify-center gap-3 bg-[var(--surf)] px-3 py-7 transition-colors duration-[var(--duration-quick)] hover:bg-[var(--surf-2)]"
+                    >
+                      <Icon
+                        aria-hidden="true"
+                        className="size-7 text-[var(--fg-dim)] transition-[color,transform] duration-[var(--duration-normal)] ease-[var(--ease-out-quart)] group-hover:-translate-y-0.5 group-hover:text-[var(--brand)]"
+                      />
+                      <span className="t-label text-center text-[var(--fg-mute)] transition-colors duration-[var(--duration-quick)] group-hover:text-[var(--fg)]">
+                        {name}
+                      </span>
+                    </motion.li>
                   );
                 })}
-              </StaggerGroup>
+              </motion.ul>
 
-              <Reveal delay={0.24} className="mt-12">
-                <h2 className="font-display text-2xl font-semibold text-[var(--color-paper)] md:text-3xl">Formación</h2>
-              </Reveal>
-              <div className="mt-5 space-y-3">
-                {education.map((edu, i) => (
-                  <Reveal key={edu.id} delay={0.28 + i * 0.05}>
-                    <motion.div
-                      whileHover={{ x: 4 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-                      className="flex items-start gap-4 rounded-r-2xl border border-[var(--color-border)] border-l-[var(--color-accent-bright)] bg-[var(--color-surface)] p-5 transition-colors hover:border-[var(--color-accent-bright)]/40"
-                      style={{ borderLeftWidth: '3px' }}
-                    >
-                      <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-accent)]/15 text-[var(--color-accent-bright)]">
-                        <FiCalendar size={17} />
-                      </div>
-                      <div>
-                        <p className="font-display font-semibold text-[var(--color-paper)]">{edu.institution}</p>
-                        {edu.description && (
-                          <p className="mt-1 text-sm text-[var(--color-paper-dim)]">{edu.description}</p>
-                        )}
-                        <p className="mt-1.5 font-mono text-xs text-[var(--color-muted)]">{edu.period}</p>
-                      </div>
-                    </motion.div>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
+              <motion.p variants={fadeUp} className="mt-6">
+                <Link
+                  to="/habilidades"
+                  className="t-label inline-flex items-center gap-1.5 text-[var(--fg-mute)] transition-colors duration-[var(--duration-quick)] hover:text-[var(--fg)]"
+                >
+                  Ver todas las tecnologías
+                  <FiArrowUpRight aria-hidden="true" />
+                </Link>
+              </motion.p>
+            </motion.div>
+          </PanelBody>
 
-          </div>
+          {/* ── 4. Certificados ──────────────────────────────────── */}
+          <PanelBody>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
+              variants={staggerContainer(0.05)}
+              className="mb-10"
+            >
+              <motion.div variants={fadeUp} className="flex items-end justify-between gap-6">
+                <div>
+                  <Eyebrow>Certificaciones</Eyebrow>
+                  <h2 className="t-h2 mt-4 max-w-xl text-[var(--fg)]">
+                    Lo que estudié por fuera del instituto.
+                  </h2>
+                </div>
+                <span className="t-num hidden shrink-0 text-[var(--fg-mute)] md:block">
+                  {String(certificates.length).padStart(2, '0')}
+                </span>
+              </motion.div>
 
-          {/* SECCIÓN DE CERTIFICACIONES */}
-          <div className="mt-24 border-t border-[var(--color-border)] pt-16">
-            <Reveal delay={0.32}>
-              <h2 className="text-center font-display text-3xl font-semibold text-[var(--color-paper)] md:text-4xl">
-                Certificaciones
-              </h2>
-            </Reveal>
+              <motion.p variants={fadeUp} className="t-label mt-5 text-[var(--fg-mute)]">
+                Arrastrá para ver las {certificates.length}
+              </motion.p>
+            </motion.div>
 
-            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {certificates.map((cert, i) => {
-                const cardColor = cert.color || 'var(--color-accent-bright)';
-                const fullLogoUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}${cert.logo ?? ''}`;
-                
-                return (
-                  <Reveal key={cert.id} delay={0.1 + i * 0.04}>
-                    <motion.div
-                      whileHover={{ y: -6, borderColor: cardColor }}
-                      transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                      className="flex h-full flex-col rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-xl shadow-black/10 transition-colors"
-                    >
-                      {/* CONTENEDOR DE IMAGEN PANORÁMICO OPTIMIZADO PARA LLENAR EL ESPACIO */}
-                      <div className="relative flex aspect-[16/9] w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-neutral-950/40 border border-[var(--color-border)]">
-                        <div 
-                          className="absolute inset-0 opacity-10 blur-2xl transition-opacity pointer-events-none"
-                          style={{ backgroundColor: cardColor }}
-                        />
+            <CertificateRail items={certificates} />
+          </PanelBody>
 
-                        {cert.logo ? (
-                          <img 
-                            src={fullLogoUrl} 
-                            alt={`Logo de ${cert.issuer}`} 
-                            className="h-full w-full object-contain scale-95 select-none transition-transform duration-300 hover:scale-100"
-                          />
-                        ) : (
-                          <FiAward size={52} style={{ color: cardColor }} />
-                        )}
+          {/* ── 5. Formación y contacto ──────────────────────────── */}
+          <PanelBody>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
+              variants={staggerContainer(0.07)}
+            >
+              {school ? (
+                <>
+                  <motion.div variants={fadeUp}>
+                    <Eyebrow>Formación</Eyebrow>
+                  </motion.div>
 
-                        <span className="absolute top-3 right-3 rounded-full bg-black/60 backdrop-blur-md px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--color-paper-dim)] border border-[var(--color-border)]">
-                          {cert.category}
-                        </span>
-                      </div>
+                  <motion.div
+                    variants={fadeUp}
+                    className="mt-6 grid gap-3 border-b border-[var(--line)] pb-10 md:grid-cols-[1fr_auto] md:items-baseline md:gap-8"
+                  >
+                    <div>
+                      <h2 className="t-h3 text-[var(--fg)]">{school.institution}</h2>
+                      {school.description ? (
+                        <p className="t-body mt-2 text-[var(--fg-mute)]">
+                          {school.description}
+                        </p>
+                      ) : null}
+                    </div>
+                    <span className="t-num text-[var(--fg-dim)] tabular-nums">
+                      {school.period}
+                    </span>
+                  </motion.div>
+                </>
+              ) : null}
 
-                      <div className="mt-5 flex flex-1 flex-col justify-between">
-                        <div>
-                          <p className="font-display text-base font-semibold text-[var(--color-paper)] line-clamp-2">
-                            {cert.title}
-                          </p>
-                          <p className="mt-1 text-sm text-[var(--color-paper-dim)] flex items-center gap-1.5">
-                            <span className="h-1 w-1 rounded-full" style={{ backgroundColor: cardColor }} />
-                            {cert.issuer}
-                          </p>
-                          <p className="mt-2 font-mono text-xs text-[var(--color-muted)]">
-                            Emitido en {cert.issueDate}
-                          </p>
-                        </div>
-                        
-                        <div className="mt-6">
-                          <a 
-                            href={cert.credentialUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 font-mono text-xs text-[var(--color-paper-dim)] transition-colors hover:bg-[var(--color-accent)]/5"
-                            onMouseEnter={(e) => (e.currentTarget.style.borderColor = cardColor)}
-                            onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--color-border)')}
-                          >
-                            <FiDownload size={14} />
-                            Ver Certificado (PDF)
-                          </a>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </Reveal>
-                );
-              })}
-            </div>
-          </div>
-          
-        </div>
+              <motion.h2
+                variants={fadeUp}
+                className="t-h1 mt-14 max-w-2xl text-[var(--fg)]"
+              >
+                Estoy disponible.
+                <span className="block text-[var(--fg-mute)]">Escribime y lo vemos.</span>
+              </motion.h2>
+
+              <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center gap-3">
+                <Button to="/contacto" variant="primary">
+                  Hablemos
+                  <FiArrowRight
+                    aria-hidden="true"
+                    className="transition-transform duration-[var(--duration-quick)] ease-[var(--ease-out-quart)] group-hover:translate-x-0.5"
+                  />
+                </Button>
+                <Button href={`mailto:${profile.email}`} external variant="secondary">
+                  <FiMail aria-hidden="true" /> {profile.email}
+                </Button>
+              </motion.div>
+            </motion.div>
+          </PanelBody>
+        </ScrollStack>
       </div>
     </>
   );

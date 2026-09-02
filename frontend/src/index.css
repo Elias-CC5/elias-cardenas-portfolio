@@ -161,7 +161,30 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  /* `clip` y no `hidden`: `hidden` convierte al body en scrollport y rompe
+     `position: sticky` en toda la pagina (el apilado de /sobre-mi depende
+     de el). `clip` recorta igual el desbordamiento horizontal sin crear
+     contexto de scroll. */
+  overflow-x: clip;
+}
+
+/* ==========================================================================
+   TOKENS DE SUPERFICIE
+   Alias semanticos que un contenedor puede redefinir para invertirse entero
+   (lo hace ScrollStack en /sobre-mi, que alterna paneles negros y blancos).
+   Todo lo que deba sobrevivir a esa inversion se pinta con estos, no con los
+   tokens de color directos.
+   ========================================================================== */
+
+:root {
+  --fg: var(--color-paper);
+  --bg: var(--color-ink);
+  --fg-dim: var(--color-paper-dim);
+  --fg-mute: var(--color-muted);
+  --line: var(--color-border);
+  --line-strong: var(--color-border-strong);
+  --surf: var(--color-surface);
+  --surf-2: var(--color-surface-2);
 }
 
 ::selection {

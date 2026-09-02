@@ -40,14 +40,21 @@ const SIZES: Record<Size, string> = {
   md: 'px-5 py-2.5 text-sm',
 };
 
+/**
+ * Los colores salen de los alias de superficie (`--fg`, `--bg`, `--line`,
+ * `--surf`), no de los tokens directos. En el resto del sitio esos alias
+ * apuntan a la paleta oscura de siempre, asi que nada cambia; dentro de un
+ * contenedor que los redefine —los paneles blancos de /sobre-mi— el boton se
+ * invierte solo, sin necesidad de una variante aparte.
+ */
 const VARIANTS: Record<Variant, string> = {
   primary:
-    'bg-[var(--color-paper)] text-[var(--color-ink)] hover:bg-white',
+    'bg-[var(--fg)] text-[var(--bg)] hover:opacity-90',
   secondary:
-    'border border-[var(--color-border)] text-[var(--color-paper)] ' +
-    'hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface)]',
+    'border border-[var(--line)] text-[var(--fg)] ' +
+    'hover:border-[var(--line-strong)] hover:bg-[var(--surf)]',
   ghost:
-    'text-[var(--color-paper-dim)] hover:text-[var(--color-paper)]',
+    'text-[var(--fg-dim)] hover:text-[var(--fg)]',
 };
 
 export default function Button({
