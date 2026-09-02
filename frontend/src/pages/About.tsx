@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FiArrowRight, FiArrowUpRight, FiDownload, FiMail } from 'react-icons/fi';
 import SEO from '@/components/layout/SEO';
 import Button from '@/components/ui/Button';
-import ScrollStack from '@/components/ui/ScrollStack';
+import ScrollStack, { PanelBody } from '@/components/ui/ScrollStack';
 import Photo3D from '@/components/ui/Photo3D';
 import CertificateRail from '@/components/sections/CertificateRail';
 import { profile, projects, education, certificates, techStackCore } from '@/data/portfolio';
@@ -64,15 +64,6 @@ function Eyebrow({ children }: { children: ReactNode }) {
       <span aria-hidden="true" className="size-1.5 rounded-full bg-[var(--fg)]" />
       <span className="t-label text-[var(--fg)]">{children}</span>
     </span>
-  );
-}
-
-/** Caja interna de cada panel. Fija el alto útil y el aire. */
-function PanelBody({ children }: { children: ReactNode }) {
-  return (
-    <div className="shell flex min-h-[calc(100vh-11rem)] flex-col justify-center py-16 md:py-20">
-      {children}
-    </div>
   );
 }
 

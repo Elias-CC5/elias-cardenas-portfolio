@@ -40,31 +40,47 @@ const BASE_TOP = 4.5; // rem — por debajo de la barra fija
 const STEP = 0.9; // rem que asoma cada panel bajo el siguiente
 const SCALE_STEP = 0.025;
 
-/** Los dos tonos. Se alternan por índice. */
-const TONES = [
-  {
-    // Negro
-    '--bg': '#0d0d0f',
-    '--fg': '#f4f4f5',
-    '--fg-dim': '#a5a5ad',
-    '--fg-mute': '#6f6f79',
-    '--line': '#212125',
-    '--line-strong': '#33333a',
-    '--surf': '#17171a',
-    '--surf-2': '#1d1d21',
-  },
-  {
-    // Blanco
-    '--bg': '#f4f4f5',
-    '--fg': '#09090a',
-    '--fg-dim': '#3f3f46',
-    '--fg-mute': '#71717a',
-    '--line': '#dcdce1',
-    '--line-strong': '#b4b4bd',
-    '--surf': '#ffffff',
-    '--surf-2': '#ebebee',
-  },
-] as const;
+/**
+ * Los dos tonos. Se alternan por índice dentro de la pila, y se exportan
+ * sueltos para las secciones que viven fuera de ella y quieren el mismo
+ * lenguaje — la banda blanca del Macbook en la portada, por ejemplo.
+ */
+export const TONE_DARK = {
+  '--bg': '#0d0d0f',
+  '--fg': '#f4f4f5',
+  '--fg-dim': '#a5a5ad',
+  '--fg-mute': '#6f6f79',
+  '--line': '#212125',
+  '--line-strong': '#33333a',
+  '--surf': '#17171a',
+  '--surf-2': '#1d1d21',
+} as const;
+
+export const TONE_LIGHT = {
+  '--bg': '#f4f4f5',
+  '--fg': '#09090a',
+  '--fg-dim': '#3f3f46',
+  '--fg-mute': '#71717a',
+  '--line': '#dcdce1',
+  '--line-strong': '#b4b4bd',
+  '--surf': '#ffffff',
+  '--surf-2': '#ebebee',
+} as const;
+
+const TONES = [TONE_DARK, TONE_LIGHT] as const;
+
+/**
+ * Caja interna de un panel. Fija el alto útil y el aire, y es la que
+ * garantiza la condición del apilado: que el contenido quepa en una pantalla.
+ * Vive acá y no en cada página porque las dos que apilan deben medir igual.
+ */
+export function PanelBody({ children }: { children: ReactNode }) {
+  return (
+    <div className="shell flex min-h-[calc(100vh-11rem)] flex-col justify-center py-16 md:py-20">
+      {children}
+    </div>
+  );
+}
 
 export default function ScrollStack({ children }: { children: ReactNode }) {
   const container = useRef<HTMLDivElement>(null);

@@ -187,6 +187,38 @@ body {
   --surf-2: var(--color-surface-2);
 }
 
+/* ==========================================================================
+   DERIVA DE LOS ICONOS FLOTANTES
+   En CSS y no en JavaScript a proposito: son 24 elementos animandose a la
+   vez. Una animacion CSS de `transform` la resuelve el compositor fuera del
+   hilo principal y cuesta lo mismo con 24 que con 240; 24 bucles de JS
+   recalculando estilos por cuadro, no.
+   ========================================================================== */
+
+@keyframes float-tech {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(calc(var(--drift) * 0.4), calc(var(--drift) * -1), 0)
+      rotate(var(--tilt));
+  }
+  50% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  75% {
+    transform: translate3d(calc(var(--drift) * -0.3), calc(var(--drift) * 0.6), 0)
+      rotate(calc(var(--tilt) * -0.75));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*='float-tech'] {
+    animation: none !important;
+  }
+}
+
 ::selection {
   background-color: var(--color-signal);
   color: var(--color-ink);
